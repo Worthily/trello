@@ -9,12 +9,14 @@ interface CardType {
   text?: string;
   checked?: boolean;
   author?: string;
+  OnDelete(): void;
 }
 interface CardState {
   header?: string;
   text?: string;
   checked?: boolean;
   author?: string;
+  OnDelete(): void;
 }
 
 export default class Card extends Component<CardType, CardState> {
@@ -26,6 +28,7 @@ export default class Card extends Component<CardType, CardState> {
       text: props.text,
       author: props.author,
       checked: props.checked,
+      OnDelete: props.OnDelete,
     };
     this.OnChecked = this.OnChecked.bind(this);
   }
@@ -35,7 +38,7 @@ export default class Card extends Component<CardType, CardState> {
     }));
   }
   render() {
-    const { header, text, checked, author } = this.state;
+    const { header, text, checked, author, OnDelete } = this.state;
     let btnSrc;
     if (checked == true) {
       btnSrc = checkImg;
@@ -57,7 +60,7 @@ export default class Card extends Component<CardType, CardState> {
           <div className="card__comments-btn card__btn">
             <img src={commentImg} alt="comment" className="card__comment-img" />
           </div>
-          <div className="card__dell-btn card__btn">
+          <div onClick={OnDelete} className="card__dell-btn card__btn">
             <img src={dellImg} alt="delete" className="card__dell-img" />
           </div>
         </div>

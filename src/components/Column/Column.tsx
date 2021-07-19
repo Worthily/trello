@@ -5,10 +5,12 @@ import Addcardbtn from '../../ui/Add-new-card-btn';
 function Column({
   cards,
   header,
+  OnDelete,
 }: {
   // eslint-disable-next-line
   cards: any[];
   header: string;
+  OnDelete(id: string): void;
 }): JSX.Element {
   const elements = cards.map((item) => {
     if (item) {
@@ -19,6 +21,7 @@ function Column({
             text={item.text}
             checked={item.checked}
             author={item.author}
+            OnDelete={() => OnDelete(item.id)}
           />
         </li>
       );
