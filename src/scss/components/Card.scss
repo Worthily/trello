@@ -1,0 +1,34 @@
+.card {
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 15px;
+  min-width: 90%;
+  &__text-wrapper {
+    margin-top: 20px;
+  }
+  &__buttons-wrapper {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+  }
+  &__btn {
+    margin: 5px;
+    width: 30px;
+    height: 30px;
+  }
+  &__dell-btn {
+    margin-left: auto;
+  }
+  &__comment-img {
+    max-width: 25px;
+    max-height: 25px;
+  }
+  &__checked-img {
+    max-width: 25px;
+    max-height: 25px;
+  }
+  &__dell-img {
+    max-width: 25px;
+    max-height: 25px;
+  }
+}
