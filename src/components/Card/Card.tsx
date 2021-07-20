@@ -10,37 +10,14 @@ interface CardType {
   checked?: boolean;
   author?: string;
   OnDelete(): void;
-}
-interface CardState {
-  header?: string;
-  text?: string;
-  checked?: boolean;
-  author?: string;
-  OnDelete(): void;
+  onCheck(): void;
 }
 
-export default class Card extends Component<CardType, CardState> {
-  // eslint-disable-next-line
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      header: props.header,
-      text: props.text,
-      author: props.author,
-      checked: props.checked,
-      OnDelete: props.OnDelete,
-    };
-    this.OnChecked = this.OnChecked.bind(this);
-  }
-  OnChecked() {
-    this.setState(({ checked }) => ({
-      checked: !checked,
-    }));
-  }
+export default class Card extends Component<CardType> {
   render() {
-    const { header, text, checked, author, OnDelete } = this.state;
+    const { header, text, checked, author, OnDelete, onCheck } = this.props;
     let btnSrc;
-    if (checked == true) {
+    if (checked) {
       btnSrc = checkImg;
     } else {
       btnSrc = notCheckImg;
@@ -54,7 +31,7 @@ export default class Card extends Component<CardType, CardState> {
           <p className="card__text">{text}</p>
         </div>
         <div className="card__buttons-wrapper">
-          <div onClick={this.OnChecked} className="card__checked-btn card__btn">
+          <div onClick={onCheck} className="card__checked-btn card__btn">
             <img src={btnSrc} alt="checked" className="card__checked-img" />
           </div>
           <div className="card__comments-btn card__btn">

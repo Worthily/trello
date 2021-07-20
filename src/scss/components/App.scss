@@ -1,6 +1,8 @@
 .app {
-  display: flex;
   width: 97%;
   margin: 0 auto;
-  justify-content: space-between;
+  &_column-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
 }

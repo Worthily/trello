@@ -6,11 +6,13 @@ function Column({
   cards,
   header,
   OnDelete,
+  onCheck,
 }: {
   // eslint-disable-next-line
   cards: any[];
   header: string;
   OnDelete(id: string): void;
+  onCheck(id: string): void;
 }): JSX.Element {
   const elements = cards.map((item) => {
     if (item) {
@@ -22,6 +24,7 @@ function Column({
             checked={item.checked}
             author={item.author}
             OnDelete={() => OnDelete(item.id)}
+            onCheck={() => onCheck(item.id)}
           />
         </li>
       );
