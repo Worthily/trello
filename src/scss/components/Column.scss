@@ -8,9 +8,18 @@
   padding: 25px 10px 5px 10px;
   border-radius: 20px;
   margin: 10px 5px 0 5px;
+  &__dis-none {
+    display: none;
+  }
   &__header {
+    &-wrapper {
+      display: flex;
+      align-items: center;
+    }
     font-family: 'Oswald';
     font-size: 33px;
+    margin-bottom: 10px;
+    margin-right: 4px;
   }
   &__add-card-btn {
     margin: 15px 0 15px 15px;

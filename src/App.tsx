@@ -6,6 +6,7 @@ interface AppProps {
   header?: string;
 }
 interface AppState {
+  columns: Array<{ id: string; header: string }>;
   header?: string;
   user: string;
   cards: Array<{
@@ -114,10 +115,17 @@ export default class App extends Component<AppProps, AppState> {
           status: 'Done',
         },
       ],
+      columns: [
+        { id: 'c1', header: 'To Do' },
+        { id: 'c2', header: 'In progress' },
+        { id: 'c3', header: 'Testing' },
+        { id: 'c4', header: 'Done' },
+      ],
     };
     this.onDelete = this.onDelete.bind(this);
     this.getUser = this.getUser.bind(this);
     this.onCheck = this.onCheck.bind(this);
+    this.getHeader = this.getHeader.bind(this);
   }
 
   onCheck(id: string): void {
@@ -131,7 +139,6 @@ export default class App extends Component<AppProps, AppState> {
         cards: newArr,
       };
     });
-    console.log(this.state.cards);
   }
 
   onDelete(id: string): void {
@@ -162,9 +169,24 @@ export default class App extends Component<AppProps, AppState> {
       }
     });
   }
+  getHeader(header: string, id: string): void {
+    this.setState(({ columns }) => {
+      const index = columns.findIndex((elem) => elem.id === id);
+      const before = columns.slice(0, index);
+      const after = columns.slice(index + 1);
+      const changedCard = {
+        ...columns[index],
+      };
+      changedCard.header = header;
+      const newArr = [...before, changedCard, ...after];
+      return {
+        columns: newArr,
+      };
+    });
+  }
 
   render() {
-    const { cards, user } = this.state;
+    const { cards, user, columns } = this.state;
     const todoCards = cards.map((item) => {
       if (item.status == 'ToDo') {
         return item;
@@ -195,33 +217,42 @@ export default class App extends Component<AppProps, AppState> {
         </div>
       );
     }
+
     return (
       <header className="app">
         {UserPopup}
         <div className="app_column-wrapper">
           <Column
+            id={columns[0].id}
             cards={todoCards}
-            header="To Do"
+            header={columns[0].header}
             OnDelete={this.onDelete}
             onCheck={this.onCheck}
+            getHeader={this.getHeader}
           />
           <Column
+            id={columns[1].id}
             cards={inprogressCards}
-            header="In progress"
+            header={columns[1].header}
             OnDelete={this.onDelete}
             onCheck={this.onCheck}
+            getHeader={this.getHeader}
           />
           <Column
+            id={columns[2].id}
             cards={testingCards}
-            header="Testing"
+            header={columns[2].header}
             OnDelete={this.onDelete}
             onCheck={this.onCheck}
+            getHeader={this.getHeader}
           />
           <Column
+            id={columns[3].id}
             cards={doneCards}
-            header="Done"
+            header={columns[3].header}
             OnDelete={this.onDelete}
             onCheck={this.onCheck}
+            getHeader={this.getHeader}
           />
         </div>
       </header>

@@ -6,7 +6,6 @@ interface LoginProps {
 }
 interface LoginState {
   user: string;
-  setUserName(user: string): void;
 }
 
 export default class LoginPopup extends Component<LoginProps, LoginState> {
@@ -15,14 +14,12 @@ export default class LoginPopup extends Component<LoginProps, LoginState> {
     super(props);
     this.state = {
       user: props.user,
-      setUserName: props.setUserName,
     };
     this.onValueChange = this.onValueChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
   onValueChange(e: React.FormEvent<HTMLInputElement>): void {
-    console.log('изменелас');
     this.setState({
       user: e.currentTarget.value,
     });
@@ -30,7 +27,6 @@ export default class LoginPopup extends Component<LoginProps, LoginState> {
   onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (this.state.user !== '') {
-      console.log('передалос');
       this.props.setUserName(this.state.user);
       this.setState({
         user: '',
