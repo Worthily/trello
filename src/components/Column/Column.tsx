@@ -11,6 +11,7 @@ interface ColumnProps {
   OnDelete(id: string): void;
   onCheck(id: string): void;
   getHeader(header: string, id: string): void;
+  createCard(id: string): void;
 }
 interface ColumnState {
   header: string;
@@ -57,7 +58,7 @@ export default class Column extends Component<ColumnProps, ColumnState> {
   }
 
   render() {
-    const { cards, OnDelete, onCheck } = this.props;
+    const { cards, OnDelete, onCheck, createCard, id } = this.props;
     let heading = (
       <div className="column__header-wrapper">
         <h2 className="column__header">{this.props.header}</h2>
@@ -103,7 +104,7 @@ export default class Column extends Component<ColumnProps, ColumnState> {
       <div className="column">
         {heading}
         <ul className="column__card-wrapper">{elements}</ul>
-        <Addcardbtn />
+        <Addcardbtn createCard={() => createCard(id)} />
       </div>
     );
   }

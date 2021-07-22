@@ -1,7 +1,20 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-function Addcardbtn() {
-  return <div className="column__add-card-btn">Добавить новую карточку...</div>;
+interface AddcardbtnProps {
+  createCard(): void;
 }
 
-export default Addcardbtn;
+export default class Addcardbtn extends Component<AddcardbtnProps> {
+  // eslint-disable-next-line
+  constructor(props: any) {
+    super(props);
+  }
+  render() {
+    const { createCard } = this.props;
+    return (
+      <div onClick={createCard} className="column__add-card-btn">
+        Добавить новую карточку...
+      </div>
+    );
+  }
+}

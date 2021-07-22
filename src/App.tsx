@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Column from './components/Column';
 import LoginPopup from './components/LoginPopup';
+import CreateCard from './components/CreateCard';
 
 interface AppProps {
   header?: string;
@@ -17,6 +18,7 @@ interface AppState {
     author: string;
     status: string;
   }>;
+  createCardId: string;
 }
 
 export default class App extends Component<AppProps, AppState> {
@@ -116,16 +118,19 @@ export default class App extends Component<AppProps, AppState> {
         },
       ],
       columns: [
-        { id: 'c1', header: 'To Do' },
-        { id: 'c2', header: 'In progress' },
-        { id: 'c3', header: 'Testing' },
-        { id: 'c4', header: 'Done' },
+        { id: 'ToDo', header: 'To Do' },
+        { id: 'InProgress', header: 'In progress' },
+        { id: 'Testing', header: 'Testing' },
+        { id: 'Done', header: 'Done' },
       ],
+      createCardId: '',
     };
     this.onDelete = this.onDelete.bind(this);
     this.getUser = this.getUser.bind(this);
     this.onCheck = this.onCheck.bind(this);
     this.getHeader = this.getHeader.bind(this);
+    this.createCard = this.createCard.bind(this);
+    this.getCreateCardPopup = this.getCreateCardPopup.bind(this);
   }
 
   onCheck(id: string): void {
@@ -184,9 +189,34 @@ export default class App extends Component<AppProps, AppState> {
       };
     });
   }
+  getCreateCardPopup(id: string): void {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    this.setState(({ createCardId }) => {
+      return {
+        createCardId: id,
+      };
+    });
+  }
+  createCard(cardHeader: string, cardText: string) {
+    this.setState(({ cards }) => {
+      const card = {
+        id: `w ${cards.length}`,
+        header: cardHeader,
+        text: cardText,
+        checked: false,
+        author: this.state.user,
+        status: this.state.createCardId,
+      };
+      const newCards = [...cards, card];
+      return {
+        cards: newCards,
+        createCardId: '',
+      };
+    });
+  }
 
   render() {
-    const { cards, user, columns } = this.state;
+    const { cards, user, columns, createCardId } = this.state;
     const todoCards = cards.map((item) => {
       if (item.status == 'ToDo') {
         return item;
@@ -212,14 +242,23 @@ export default class App extends Component<AppProps, AppState> {
       UserPopup = <LoginPopup setUserName={this.getUser} user={user} />;
     } else {
       UserPopup = (
-        <div className="login-popup__logged-str">
-          Приветствуем в Trello, {user}
+        <div className="login-popup__logged-wrapper">
+          <span className="login-popup__logged-str">
+            Приветствуем в Trello, {user}
+          </span>
         </div>
       );
+    }
+    let createCardPopup: JSX.Element;
+    if (createCardId != '') {
+      createCardPopup = <CreateCard createCard={this.createCard} />;
+    } else {
+      createCardPopup = <></>;
     }
 
     return (
       <header className="app">
+        {createCardPopup}
         {UserPopup}
         <div className="app_column-wrapper">
           <Column
@@ -229,6 +268,7 @@ export default class App extends Component<AppProps, AppState> {
             OnDelete={this.onDelete}
             onCheck={this.onCheck}
             getHeader={this.getHeader}
+            createCard={this.getCreateCardPopup}
           />
           <Column
             id={columns[1].id}
@@ -237,6 +277,7 @@ export default class App extends Component<AppProps, AppState> {
             OnDelete={this.onDelete}
             onCheck={this.onCheck}
             getHeader={this.getHeader}
+            createCard={this.getCreateCardPopup}
           />
           <Column
             id={columns[2].id}
@@ -245,6 +286,7 @@ export default class App extends Component<AppProps, AppState> {
             OnDelete={this.onDelete}
             onCheck={this.onCheck}
             getHeader={this.getHeader}
+            createCard={this.getCreateCardPopup}
           />
           <Column
             id={columns[3].id}
@@ -253,6 +295,7 @@ export default class App extends Component<AppProps, AppState> {
             OnDelete={this.onDelete}
             onCheck={this.onCheck}
             getHeader={this.getHeader}
+            createCard={this.getCreateCardPopup}
           />
         </div>
       </header>
