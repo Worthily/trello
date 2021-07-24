@@ -19,9 +19,13 @@
   &__dell-btn {
     margin-left: auto;
   }
+  &__comments-btn {
+    display: flex;
+  }
   &__comment-img {
     max-width: 25px;
     max-height: 25px;
+    margin-left: 7px;
   }
   &__checked-img {
     max-width: 25px;
@@ -30,5 +34,8 @@
   &__dell-img {
     max-width: 25px;
     max-height: 25px;
+  }
+  &__comment-count {
+    font-size: 22px;
   }
 }

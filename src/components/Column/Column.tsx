@@ -12,6 +12,8 @@ interface ColumnProps {
   onCheck(id: string): void;
   getHeader(header: string, id: string): void;
   createCard(id: string): void;
+  onShowPopup(id: string): void;
+  commentsCount(id: string): number;
 }
 interface ColumnState {
   header: string;
@@ -40,7 +42,6 @@ export default class Column extends Component<ColumnProps, ColumnState> {
   }
 
   onValueChange(e: React.FormEvent<HTMLInputElement>): void {
-    console.log('123');
     this.setState({
       header: e.currentTarget.value,
     });
@@ -58,7 +59,15 @@ export default class Column extends Component<ColumnProps, ColumnState> {
   }
 
   render() {
-    const { cards, OnDelete, onCheck, createCard, id } = this.props;
+    const {
+      cards,
+      OnDelete,
+      onCheck,
+      createCard,
+      id,
+      onShowPopup,
+      commentsCount,
+    } = this.props;
     let heading = (
       <div className="column__header-wrapper">
         <h2 className="column__header">{this.props.header}</h2>
@@ -95,6 +104,8 @@ export default class Column extends Component<ColumnProps, ColumnState> {
               author={item.author}
               OnDelete={() => OnDelete(item.id)}
               onCheck={() => onCheck(item.id)}
+              onShowPopup={() => onShowPopup(item.id)}
+              commentsCount={() => commentsCount(item.id)}
             />
           </li>
         );
