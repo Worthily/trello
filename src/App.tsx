@@ -163,8 +163,9 @@ export default class App extends Component<AppProps, AppState> {
       const after = cards.slice(index + 1);
       const newArr = [...before, ...after];
       localStorage.setItem('cards', JSON.stringify(newArr));
+      const newshowCardId = '';
       return {
-        showCardId: '',
+        showCardId: newshowCardId,
         cards: newArr,
       };
     });
@@ -211,8 +212,22 @@ export default class App extends Component<AppProps, AppState> {
   }
   createCard(cardHeader: string, cardText: string) {
     this.setState(({ cards }) => {
+      let id = 0;
+      let success = false;
+      const cardsId: string[] = [];
+      for (let i = 0; i < cards.length; i++) {
+        cardsId.push(cards[i].id);
+      }
+      while (!success) {
+        if (cardsId.indexOf(`w${id}`) !== -1) {
+          id++;
+        } else {
+          success = true;
+        }
+      }
+
       const card = {
-        id: `w ${cards.length}`,
+        id: `w${id}`,
         header: cardHeader,
         text: cardText,
         checked: false,
@@ -221,9 +236,10 @@ export default class App extends Component<AppProps, AppState> {
       };
       const newCards = [...cards, card];
       localStorage.setItem('cards', JSON.stringify(newCards));
+      const newCreateCardId = '';
       return {
         cards: newCards,
-        createCardId: '',
+        createCardId: newCreateCardId,
       };
     });
   }
@@ -386,7 +402,8 @@ export default class App extends Component<AppProps, AppState> {
     let showCardPopup: JSX.Element;
     if (showCardId !== '') {
       const card = cards[cards.findIndex((elem) => elem.id === showCardId)];
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const column =
+        columns[columns.findIndex((item) => card.status === item.id)];
       const cardComments: Array<{
         id: string;
         author: string;
@@ -404,7 +421,7 @@ export default class App extends Component<AppProps, AppState> {
           header={card.header}
           text={card.text}
           author={card.author}
-          column={card.status}
+          column={column.header}
           OnDelete={this.onDelete}
           OnClose={this.onCloseCardPopup}
           listener={listenerESC}
