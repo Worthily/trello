@@ -3,6 +3,7 @@
   margin: 0 auto;
   &_column-wrapper {
     display: flex;
+    align-items: flex-start;
     justify-content: space-between;
   }
 }

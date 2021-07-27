@@ -386,7 +386,8 @@ export default class App extends Component<AppProps, AppState> {
     let showCardPopup: JSX.Element;
     if (showCardId !== '') {
       const card = cards[cards.findIndex((elem) => elem.id === showCardId)];
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const column =
+        columns[columns.findIndex((item) => card.status === item.id)];
       const cardComments: Array<{
         id: string;
         author: string;
@@ -404,7 +405,7 @@ export default class App extends Component<AppProps, AppState> {
           header={card.header}
           text={card.text}
           author={card.author}
-          column={card.status}
+          column={column.header}
           OnDelete={this.onDelete}
           OnClose={this.onCloseCardPopup}
           listener={listenerESC}
