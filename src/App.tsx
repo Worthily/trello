@@ -112,6 +112,12 @@ export default class App extends Component<AppProps, AppState> {
           text: 'деланные на базе интернет-аналитики выводы ассоциативно распределены',
           card: 'w1',
         },
+        {
+          id: 'c2',
+          author: 'Димасик',
+          text: 'деланные на базе интернет-аналитики выводы ассоциативно распределены',
+          card: 'w1',
+        },
       ];
     }
 
@@ -326,8 +332,22 @@ export default class App extends Component<AppProps, AppState> {
   }
   onCommentAdd(id: string, text: string) {
     this.setState(({ comments, user }) => {
+      let commentId = 0;
+      let success = false;
+      const commentsId: string[] = [];
+      for (let i = 0; i < comments.length; i++) {
+        commentsId.push(comments[i].id);
+      }
+      while (!success) {
+        if (commentsId.indexOf(`c${commentId}`) !== -1) {
+          commentId++;
+        } else {
+          success = true;
+        }
+      }
+
       const comment = {
-        id: 'c' + comments.length,
+        id: `c${commentId}`,
         card: id,
         author: user,
         text: text,
