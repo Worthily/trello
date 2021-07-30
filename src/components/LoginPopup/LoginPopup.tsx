@@ -1,35 +1,15 @@
 import React, { useState } from 'react';
 
-// interface LoginProps {
-//   user: string;
-//   setUserName(user: string): void;
-// }
-// interface LoginState {
-//   user: string;
-// }
 // eslint-disable-next-line
 function LoginPopup(props: any) {
   const [user, setUser] = useState('');
-  // constructor(props: any) {
-  //   super(props);
-  //   this.state = {
-  //     user: props.user,
-  //   };
-  //   this.onValueChange = this.onValueChange.bind(this);
-  //   this.onSubmit = this.onSubmit.bind(this);
-  // }
 
   function onValueChange(e: React.FormEvent<HTMLInputElement>): void {
     setUser(e.currentTarget.value);
   }
+
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    // if (this.state.user !== '') {
-    //   this.props.setUserName(this.state.user);
-    //   this.setState({
-    //     user: '',
-    //   });
-    // }
     if (user !== '') {
       props.setUserName(user);
       setUser('');
