@@ -90,7 +90,6 @@ export default class App extends Component<AppProps, AppState> {
       ];
     }
 
-    // asd
     let commentsLoc: Array<{
       id: string;
       author: string;
@@ -115,7 +114,6 @@ export default class App extends Component<AppProps, AppState> {
         },
       ];
     }
-    // asd
 
     this.state = {
       user: userLoc,
