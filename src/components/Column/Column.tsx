@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Card from '../Card';
-import Addcardbtn from '../../ui/Add-new-card-btn';
+import AddCardBtn from '../../ui/AddCardBtn';
 import changeImg from '../../assets/img/change.png';
 
 interface ColumnProps {
@@ -115,7 +115,7 @@ export default class Column extends Component<ColumnProps, ColumnState> {
       <div className="column">
         {heading}
         <ul className="column__card-wrapper">{elements}</ul>
-        <Addcardbtn createCard={() => createCard(id)} />
+        <AddCardBtn createCard={() => createCard(id)} />
       </div>
     );
   }
