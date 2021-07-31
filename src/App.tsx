@@ -127,48 +127,55 @@ function App() {
     }
   }
   function getHeader(header: string, id: string): void {
-    const index = columns.findIndex((elem) => elem.id === id);
-    const before = columns.slice(0, index);
-    const after = columns.slice(index + 1);
-    const changedCard = {
-      ...columns[index],
-    };
-    changedCard.header = header;
-    const newArr = [...before, changedCard, ...after];
-    localStorage.setItem('columns', JSON.stringify(newArr));
-    setColumns(newArr);
+    const test = header.replace(/\s/g, '');
+    if (test !== '') {
+      const index = columns.findIndex((elem) => elem.id === id);
+      const before = columns.slice(0, index);
+      const after = columns.slice(index + 1);
+      const changedCard = {
+        ...columns[index],
+      };
+      changedCard.header = header;
+      const newArr = [...before, changedCard, ...after];
+      localStorage.setItem('columns', JSON.stringify(newArr));
+      setColumns(newArr);
+    }
   }
   function getCreateCardPopup(id: string): void {
     setCreateCardId(id);
   }
   function createCard(cardHeader: string, cardText: string) {
-    let id = 0;
-    let success = false;
-    const cardsId: string[] = [];
-    for (let i = 0; i < cards.length; i++) {
-      cardsId.push(cards[i].id);
-    }
-    while (!success) {
-      if (cardsId.indexOf(`w${id}`) !== -1) {
-        id++;
-      } else {
-        success = true;
+    const testCardHeader = cardHeader.replace(/\s/g, '');
+    const testCardText = cardText.replace(/\s/g, '');
+    if (testCardHeader !== '' && testCardText !== '') {
+      let id = 0;
+      let success = false;
+      const cardsId: string[] = [];
+      for (let i = 0; i < cards.length; i++) {
+        cardsId.push(cards[i].id);
       }
-    }
+      while (!success) {
+        if (cardsId.indexOf(`w${id}`) !== -1) {
+          id++;
+        } else {
+          success = true;
+        }
+      }
 
-    const card = {
-      id: `w${id}`,
-      header: cardHeader,
-      text: cardText,
-      checked: false,
-      author: user,
-      status: createCardId,
-    };
-    const newCards = [...cards, card];
-    localStorage.setItem('cards', JSON.stringify(newCards));
-    const newCreateCardId = '';
-    setCards(newCards);
-    setCreateCardId(newCreateCardId);
+      const card = {
+        id: `w${id}`,
+        header: cardHeader,
+        text: cardText,
+        checked: false,
+        author: user,
+        status: createCardId,
+      };
+      const newCards = [...cards, card];
+      localStorage.setItem('cards', JSON.stringify(newCards));
+      const newCreateCardId = '';
+      setCards(newCards);
+      setCreateCardId(newCreateCardId);
+    }
   }
   function onShowPopup(id: string) {
     setShowCardId(id);
@@ -214,39 +221,45 @@ function App() {
     setComments(newArr);
   }
   function onCommentChange(id: string, text: string) {
-    const index = comments.findIndex((elem) => elem.id === id);
-    const newCard = comments[index];
-    const before = comments.slice(0, index);
-    const after = comments.slice(index + 1);
-    newCard.text = text;
-    const newArr = [...before, newCard, ...after];
-    localStorage.setItem('comments', JSON.stringify(newArr));
-    setComments(newArr);
+    const test = text.replace(/\s/g, '');
+    if (test !== '') {
+      const index = comments.findIndex((elem) => elem.id === id);
+      const newCard = comments[index];
+      const before = comments.slice(0, index);
+      const after = comments.slice(index + 1);
+      newCard.text = text;
+      const newArr = [...before, newCard, ...after];
+      localStorage.setItem('comments', JSON.stringify(newArr));
+      setComments(newArr);
+    }
   }
   function onCommentAdd(id: string, text: string) {
-    let commentId = 0;
-    let success = false;
-    const commentsId: string[] = [];
-    for (let i = 0; i < comments.length; i++) {
-      commentsId.push(comments[i].id);
-    }
-    while (!success) {
-      if (commentsId.indexOf(`c${commentId}`) !== -1) {
-        commentId++;
-      } else {
-        success = true;
+    const test = text.replace(/\s/g, '');
+    if (test !== '') {
+      let commentId = 0;
+      let success = false;
+      const commentsId: string[] = [];
+      for (let i = 0; i < comments.length; i++) {
+        commentsId.push(comments[i].id);
       }
-    }
+      while (!success) {
+        if (commentsId.indexOf(`c${commentId}`) !== -1) {
+          commentId++;
+        } else {
+          success = true;
+        }
+      }
 
-    const comment = {
-      id: `c${commentId}`,
-      card: id,
-      author: user,
-      text: text,
-    };
-    const newArr = [...comments, comment];
-    localStorage.setItem('comments', JSON.stringify(newArr));
-    setComments(newArr);
+      const comment = {
+        id: `c${commentId}`,
+        card: id,
+        author: user,
+        text: text,
+      };
+      const newArr = [...comments, comment];
+      localStorage.setItem('comments', JSON.stringify(newArr));
+      setComments(newArr);
+    }
   }
   function commentsCount(id: string) {
     let count = 0;
