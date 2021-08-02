@@ -10,6 +10,8 @@ function ShowCardPopup(props: any) {
   const [headerString, setHeaderString] = useState(props.headerString);
   const [textString, setTextString] = useState(props.textString);
   const [commentText, setCommentText] = useState('');
+  const [header, setHeader] = useState(props.header);
+  const [text, setText] = useState(props.text);
 
   function addListen() {
     document.addEventListener('keydown', (event) => {
@@ -21,25 +23,35 @@ function ShowCardPopup(props: any) {
   }
   function onHeaderValueChange(e: React.FormEvent<HTMLInputElement>): void {
     if (e.currentTarget.value !== '') {
+      setHeader(e.currentTarget.value);
       setHeaderString(e.currentTarget.value);
+    } else {
+      setHeader('');
+      setHeaderString(' ');
     }
   }
   function onHeaderSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (headerString !== '') {
       props.onHeaderChange(props.id, headerString);
+      setHeader(headerString);
     }
     setHeaderString('');
   }
   function onTextValueChange(e: React.FormEvent<HTMLTextAreaElement>): void {
     if (e.currentTarget.value !== '') {
+      setText(e.currentTarget.value);
       setTextString(e.currentTarget.value);
+    } else {
+      setText('');
+      setTextString(' ');
     }
   }
   function onTextSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (textString !== '') {
       props.onTextChange(props.id, textString);
+      setText(textString);
     }
     setTextString('');
   }
@@ -87,8 +99,8 @@ function ShowCardPopup(props: any) {
           onSubmit={onHeaderSubmit}
           className="show-card__change-header-form">
           <input
+            value={header}
             onChange={onHeaderValueChange}
-            type="text"
             className="show-card__change-header-inp"
           />
           <button type="submit" className="show-card__change-header-btn">
@@ -123,6 +135,7 @@ function ShowCardPopup(props: any) {
           <textarea
             onChange={onTextValueChange}
             className="show-card__change-text-inp"
+            value={text}
           />
           <button type="submit" className="show-card__change-text-btn">
             OK
