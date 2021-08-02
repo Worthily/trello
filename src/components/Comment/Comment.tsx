@@ -52,7 +52,10 @@ function Comment(props: any) {
   } else {
     commentBody = (
       <form onSubmit={onSubmit} className="comment__form">
-        <textarea onChange={onValueChange} className="comment__text"></textarea>
+        <textarea
+          value={text}
+          onChange={onValueChange}
+          className="comment__text"></textarea>
         <button className="comment__submit-btn">ОК</button>
       </form>
     );

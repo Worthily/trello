@@ -49,8 +49,7 @@ function Column(props: any) {
           <input
             onChange={onValueChange}
             className="column__input"
-            type="text"
-            name=""
+            value={header}
           />
           <button className="column__submit-btn">OK</button>
         </form>
