@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 
 // eslint-disable-next-line
-function CreateCard(props: any) {
+function CreateCard(props: { createCard(header: string, text: string): void }) {
   const [header, setHeader] = useState('');
   const [text, setText] = useState('');
 
   function onHeaderChange(e: React.FormEvent<HTMLInputElement>): void {
     setHeader(e.currentTarget.value);
   }
+
   function onTextChange(e: React.FormEvent<HTMLTextAreaElement>): void {
     setText(e.currentTarget.value);
   }
+
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (header !== '' && text !== '') {
@@ -19,6 +21,7 @@ function CreateCard(props: any) {
       setText('');
     }
   }
+
   return (
     <div className="createcard">
       <div className="createcard__wrapper">

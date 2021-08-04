@@ -5,7 +5,17 @@ import checkImg from '../../assets/img/viewgreen.png';
 import dellImg from '../../assets/img/delete.svg';
 
 // eslint-disable-next-line
-function Card(props: any) {
+
+function Card(props: {
+  header: string;
+  text: string;
+  checked: boolean;
+  author: string;
+  OnDelete(): void;
+  onCheck(): void;
+  onShowPopup(): void;
+  commentsCount(): number;
+}) {
   const {
     header,
     text,

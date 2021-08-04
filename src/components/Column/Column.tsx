@@ -3,8 +3,24 @@ import Card from '../Card';
 import AddCardBtn from '../../ui/AddCardBtn';
 import changeImg from '../../assets/img/change.png';
 
-// eslint-disable-next-line
-function Column(props: any) {
+function Column(props: {
+  id: string;
+  cards: Array<{
+    id: string;
+    header: string;
+    text: string;
+    checked: boolean;
+    author: string;
+    status: string;
+  }>;
+  header: string;
+  OnDelete(id: string): void;
+  onCheck(id: string): void;
+  getHeader(id: string, header: string): void;
+  createCard(id: string): void;
+  onShowPopup(id: string): void;
+  commentsCount(id: string): number;
+}) {
   const [header, setHeader] = useState(props.header);
   const [change, setChange] = useState(false);
 
@@ -56,9 +72,8 @@ function Column(props: any) {
       </div>
     );
   }
-  // eslint-disable-next-line
-  const elements = cards.map((item: any) => {
-    if (item) {
+  const elements = cards.map((item) => {
+    if (item && item.status == id) {
       return (
         <li key={item.id} className="column__card-item">
           <Card
