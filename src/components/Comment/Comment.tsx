@@ -2,14 +2,20 @@ import React, { useState } from 'react';
 import dellImg from '../../assets/img/delete.svg';
 import changeBtn from '../../assets/img/change-white.png';
 
-// eslint-disable-next-line
-function Comment(props: any) {
+function Comment(props: {
+  id: string;
+  author: string;
+  text: string;
+  onDelete(id: string): void;
+  onChange(id: string, text: string): void;
+}) {
   const [text, setText] = useState(props.text);
   const [change, setChange] = useState(false);
 
   function onStartChange() {
     setChange(true);
   }
+
   function onValueChange(e: React.FormEvent<HTMLTextAreaElement>): void {
     setText(e.currentTarget.value);
   }
@@ -22,8 +28,10 @@ function Comment(props: any) {
       setChange(false);
     }
   }
+
   const { id, author, onDelete } = props;
   let commentBody: JSX.Element;
+
   if (change == false) {
     commentBody = (
       <>

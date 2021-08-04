@@ -5,8 +5,30 @@ import sendBtn from '../../assets/img/send-button.png';
 import changeBtn from '../../assets/img/change-white.png';
 import Comment from '../Comment';
 
-// eslint-disable-next-line
-function ShowCardPopup(props: any) {
+function ShowCardPopup(props: {
+  id: string;
+  header: string;
+  text: string;
+  author: string;
+  column: string;
+  OnDelete(id: string): void;
+  OnClose(): void;
+  listener: boolean;
+  addListener(): void;
+  headerString: string;
+  textString: string;
+  onHeaderChange(id: string, header: string): void;
+  onTextChange(id: string, text: string): void;
+  cardComments: Array<{
+    id: string;
+    author: string;
+    text: string;
+    card: string;
+  }>;
+  onCommentDell(id: string): void;
+  onCommentChange(id: string, text: string): void;
+  onCommentAdd(id: string, text: string): void;
+}) {
   const [headerString, setHeaderString] = useState(props.headerString);
   const [textString, setTextString] = useState(props.textString);
   const [commentText, setCommentText] = useState('');
@@ -21,6 +43,7 @@ function ShowCardPopup(props: any) {
       }
     });
   }
+
   function onHeaderValueChange(e: React.FormEvent<HTMLInputElement>): void {
     if (e.currentTarget.value !== '') {
       setHeader(e.currentTarget.value);
@@ -30,6 +53,7 @@ function ShowCardPopup(props: any) {
       setHeaderString(' ');
     }
   }
+
   function onHeaderSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (headerString !== '') {
@@ -38,6 +62,7 @@ function ShowCardPopup(props: any) {
     }
     setHeaderString('');
   }
+
   function onTextValueChange(e: React.FormEvent<HTMLTextAreaElement>): void {
     if (e.currentTarget.value !== '') {
       setText(e.currentTarget.value);
@@ -47,6 +72,7 @@ function ShowCardPopup(props: any) {
       setTextString(' ');
     }
   }
+
   function onTextSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (textString !== '') {
@@ -55,11 +81,13 @@ function ShowCardPopup(props: any) {
     }
     setTextString('');
   }
+
   function onCommentValueChange(e: React.FormEvent<HTMLInputElement>): void {
     if (e.currentTarget.value !== '') {
       setCommentText(e.currentTarget.value);
     }
   }
+
   function onCommentSubmit(e: React.FormEvent) {
     e.preventDefault();
     const test = commentText.replace(/\s/g, '');
@@ -72,6 +100,7 @@ function ShowCardPopup(props: any) {
   if (!props.listener) {
     addListen();
   }
+
   let headerTop: JSX.Element;
   if (headerString == '') {
     headerTop = (
@@ -110,6 +139,7 @@ function ShowCardPopup(props: any) {
       </div>
     );
   }
+
   let cardText: JSX.Element;
   if (textString == '') {
     cardText = (
@@ -144,6 +174,7 @@ function ShowCardPopup(props: any) {
       </>
     );
   }
+
   const comments = props.cardComments.map(
     (item: { id: string; author: string; text: string; card: string }) => {
       if (item) {
@@ -161,6 +192,7 @@ function ShowCardPopup(props: any) {
       }
     },
   );
+
   return (
     <div className="show-card">
       <div className="show-card__wrapper">

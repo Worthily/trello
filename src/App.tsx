@@ -14,6 +14,7 @@ function App() {
     author: string;
     status: string;
   }>;
+
   if (localStorage.getItem('user') != null) {
     userLoc = localStorage.getItem('user') as string;
   } else {
@@ -42,10 +43,12 @@ function App() {
       },
     ];
   }
+
   let columnsLoc: Array<{
     id: string;
     header: string;
   }>;
+
   if (localStorage.getItem('columns') != null) {
     const columnsStr = localStorage.getItem('columns') as string;
     columnsLoc = JSON.parse(columnsStr) as Array<{
@@ -67,6 +70,7 @@ function App() {
     text: string;
     card: string;
   }>;
+
   if (localStorage.getItem('comments') != null) {
     const commentsStr = localStorage.getItem('comments') as string;
     commentsLoc = JSON.parse(commentsStr) as Array<{
@@ -109,6 +113,7 @@ function App() {
     localStorage.setItem('cards', JSON.stringify(newArr));
     setCards(newArr);
   }
+
   function onDelete(id: string): void {
     const index = cards.findIndex((elem) => elem.id === id);
     const before = cards.slice(0, index);
@@ -119,6 +124,7 @@ function App() {
     setShowCardId(newshowCardId);
     setCards(newArr);
   }
+
   function getUser(userName: string): void {
     if (userName !== user) {
       const userLogin = userName;
@@ -126,6 +132,7 @@ function App() {
       setUser(userLogin);
     }
   }
+
   function getHeader(header: string, id: string): void {
     const test = header.replace(/\s/g, '');
     if (test !== '') {
@@ -141,19 +148,24 @@ function App() {
       setColumns(newArr);
     }
   }
+
   function getCreateCardPopup(id: string): void {
     setCreateCardId(id);
   }
+
   function createCard(cardHeader: string, cardText: string) {
     const testCardHeader = cardHeader.replace(/\s/g, '');
     const testCardText = cardText.replace(/\s/g, '');
+
     if (testCardHeader !== '' && testCardText !== '') {
       let id = 0;
       let success = false;
       const cardsId: string[] = [];
+
       for (let i = 0; i < cards.length; i++) {
         cardsId.push(cards[i].id);
       }
+
       while (!success) {
         if (cardsId.indexOf(`w${id}`) !== -1) {
           id++;
@@ -170,6 +182,7 @@ function App() {
         author: user,
         status: createCardId,
       };
+
       const newCards = [...cards, card];
       localStorage.setItem('cards', JSON.stringify(newCards));
       const newCreateCardId = '';
@@ -177,15 +190,19 @@ function App() {
       setCreateCardId(newCreateCardId);
     }
   }
-  function onShowPopup(id: string) {
+
+  function onShowPopup(id: string): void {
     setShowCardId(id);
   }
+
   function onCloseCardPopup(): void {
     setShowCardId('');
   }
-  function addListener() {
+
+  function addListener(): void {
     setListenerESC(true);
   }
+
   function changeCardHeader(id: string, header: string) {
     const test = header.replace(/\s/g, '');
     if (test !== '') {
@@ -199,6 +216,7 @@ function App() {
       setCards(newArr);
     }
   }
+
   function changeCardText(id: string, text: string) {
     const test = text.replace(/\s/g, '');
     if (test !== '') {
@@ -212,6 +230,7 @@ function App() {
       setCards(newArr);
     }
   }
+
   function onCommentDell(id: string) {
     const index = comments.findIndex((elem) => elem.id === id);
     const before = comments.slice(0, index);
@@ -220,6 +239,7 @@ function App() {
     localStorage.setItem('comments', JSON.stringify(newArr));
     setComments(newArr);
   }
+
   function onCommentChange(id: string, text: string) {
     const test = text.replace(/\s/g, '');
     if (test !== '') {
@@ -233,15 +253,18 @@ function App() {
       setComments(newArr);
     }
   }
+
   function onCommentAdd(id: string, text: string) {
     const test = text.replace(/\s/g, '');
     if (test !== '') {
       let commentId = 0;
       let success = false;
       const commentsId: string[] = [];
+
       for (let i = 0; i < comments.length; i++) {
         commentsId.push(comments[i].id);
       }
+
       while (!success) {
         if (commentsId.indexOf(`c${commentId}`) !== -1) {
           commentId++;
@@ -256,11 +279,13 @@ function App() {
         author: user,
         text: text,
       };
+
       const newArr = [...comments, comment];
       localStorage.setItem('comments', JSON.stringify(newArr));
       setComments(newArr);
     }
   }
+
   function commentsCount(id: string) {
     let count = 0;
     for (let i = 0; i < comments.length; i++) {
@@ -270,26 +295,7 @@ function App() {
     }
     return count;
   }
-  const todoCards = cards.map((item) => {
-    if (item.status == 'ToDo') {
-      return item;
-    }
-  });
-  const inprogressCards = cards.map((item) => {
-    if (item.status == 'InProgress') {
-      return item;
-    }
-  });
-  const testingCards = cards.map((item) => {
-    if (item.status == 'Testing') {
-      return item;
-    }
-  });
-  const doneCards = cards.map((item) => {
-    if (item.status == 'Done') {
-      return item;
-    }
-  });
+
   let UserPopup: JSX.Element;
   if (user == '') {
     UserPopup = <LoginPopup setUserName={getUser} user={user} />;
@@ -302,6 +308,7 @@ function App() {
       </div>
     );
   }
+
   let createCardPopup: JSX.Element;
   if (createCardId != '') {
     createCardPopup = <CreateCard createCard={createCard} />;
@@ -320,11 +327,13 @@ function App() {
       text: string;
       card: string;
     }> = [];
+
     for (let i = 0; i < comments.length; i++) {
       if (card.id === comments[i].card) {
         cardComments.push(comments[i]);
       }
     }
+
     showCardPopup = (
       <ShowCardPopup
         id={card.id}
@@ -358,7 +367,7 @@ function App() {
       <div className="app_column-wrapper">
         <Column
           id={columns[0].id}
-          cards={todoCards}
+          cards={cards}
           header={columns[0].header}
           OnDelete={onDelete}
           onCheck={onCheck}
@@ -369,7 +378,7 @@ function App() {
         />
         <Column
           id={columns[1].id}
-          cards={inprogressCards}
+          cards={cards}
           header={columns[1].header}
           OnDelete={onDelete}
           onCheck={onCheck}
@@ -380,7 +389,7 @@ function App() {
         />
         <Column
           id={columns[2].id}
-          cards={testingCards}
+          cards={cards}
           header={columns[2].header}
           OnDelete={onDelete}
           onCheck={onCheck}
@@ -391,7 +400,7 @@ function App() {
         />
         <Column
           id={columns[3].id}
-          cards={doneCards}
+          cards={cards}
           header={columns[3].header}
           OnDelete={onDelete}
           onCheck={onCheck}
