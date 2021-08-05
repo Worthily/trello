@@ -142,6 +142,7 @@ function App() {
       const changedCard = {
         ...columns[index],
       };
+
       changedCard.header = header;
       const newArr = [...before, changedCard, ...after];
       localStorage.setItem('columns', JSON.stringify(newArr));
@@ -358,58 +359,29 @@ function App() {
   } else {
     showCardPopup = <></>;
   }
-
+  const column = columns.map((item) => {
+    return (
+      <li key={item.id} className="app__column-item">
+        <Column
+          id={item.id}
+          cards={cards}
+          header={item.header}
+          OnDelete={onDelete}
+          onCheck={onCheck}
+          getHeader={getHeader}
+          createCard={getCreateCardPopup}
+          onShowPopup={onShowPopup}
+          commentsCount={commentsCount}
+        />
+      </li>
+    );
+  });
   return (
     <header className="app">
       {showCardPopup}
       {createCardPopup}
       {UserPopup}
-      <div className="app_column-wrapper">
-        <Column
-          id={columns[0].id}
-          cards={cards}
-          header={columns[0].header}
-          OnDelete={onDelete}
-          onCheck={onCheck}
-          getHeader={getHeader}
-          createCard={getCreateCardPopup}
-          onShowPopup={onShowPopup}
-          commentsCount={commentsCount}
-        />
-        <Column
-          id={columns[1].id}
-          cards={cards}
-          header={columns[1].header}
-          OnDelete={onDelete}
-          onCheck={onCheck}
-          getHeader={getHeader}
-          createCard={getCreateCardPopup}
-          onShowPopup={onShowPopup}
-          commentsCount={commentsCount}
-        />
-        <Column
-          id={columns[2].id}
-          cards={cards}
-          header={columns[2].header}
-          OnDelete={onDelete}
-          onCheck={onCheck}
-          getHeader={getHeader}
-          createCard={getCreateCardPopup}
-          onShowPopup={onShowPopup}
-          commentsCount={commentsCount}
-        />
-        <Column
-          id={columns[3].id}
-          cards={cards}
-          header={columns[3].header}
-          OnDelete={onDelete}
-          onCheck={onCheck}
-          getHeader={getHeader}
-          createCard={getCreateCardPopup}
-          onShowPopup={onShowPopup}
-          commentsCount={commentsCount}
-        />
-      </div>
+      <ul className="app__column-wrapper">{column}</ul>
     </header>
   );
 }

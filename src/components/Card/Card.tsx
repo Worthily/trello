@@ -27,12 +27,7 @@ function Card(props: {
     commentsCount,
   } = props;
 
-  let btnSrc;
-  if (checked) {
-    btnSrc = checkImg;
-  } else {
-    btnSrc = notCheckImg;
-  }
+  const btnImgSrc = checked ? checkImg : notCheckImg;
 
   let commentsCountSpan: JSX.Element;
   if (commentsCount() !== 0) {
@@ -54,7 +49,7 @@ function Card(props: {
       </div>
       <div className="card__buttons-wrapper">
         <div onClick={onCheck} className="card__checked-btn card__btn">
-          <img src={btnSrc} alt="checked" className="card__checked-img" />
+          <img src={btnImgSrc} alt="checked" className="card__checked-img" />
         </div>
         <div className="card__comments-btn card__btn">
           {commentsCountSpan}

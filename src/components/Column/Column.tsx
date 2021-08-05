@@ -50,6 +50,7 @@ function Column(props: {
     onShowPopup,
     commentsCount,
   } = props;
+
   let heading = (
     <div className="column__header-wrapper">
       <h2 className="column__header">{props.header}</h2>
@@ -58,6 +59,7 @@ function Column(props: {
       </div>
     </div>
   );
+
   if (change) {
     heading = (
       <div className="column__header-wrapper">
@@ -72,6 +74,7 @@ function Column(props: {
       </div>
     );
   }
+
   const elements = cards.map((item) => {
     if (item && item.status == id) {
       return (
@@ -90,6 +93,7 @@ function Column(props: {
       );
     }
   });
+
   return (
     <div className="column">
       {heading}
