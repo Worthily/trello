@@ -4,6 +4,8 @@ import closeImg from '../../assets/img/close.png';
 import sendBtn from '../../assets/img/send-button.png';
 import changeBtn from '../../assets/img/change-white.png';
 import Comment from '../Comment';
+import CardHeaderChange from '../../ui/CardHeaderChange';
+import CardTextChange from '../../ui/CardTextChange';
 
 function ShowCardPopup(props: {
   id: string;
@@ -15,8 +17,6 @@ function ShowCardPopup(props: {
   OnClose(): void;
   listener: boolean;
   addListener(): void;
-  headerString: string;
-  textString: string;
   onHeaderChange(id: string, header: string): void;
   onTextChange(id: string, text: string): void;
   cardComments: Array<{
@@ -29,8 +29,8 @@ function ShowCardPopup(props: {
   onCommentChange(id: string, text: string): void;
   onCommentAdd(id: string, text: string): void;
 }) {
-  const [headerString, setHeaderString] = useState(props.headerString);
-  const [textString, setTextString] = useState(props.textString);
+  const [headerChange, setHeaderChange] = useState(false);
+  const [textChange, setTextChange] = useState(false);
   const [commentText, setCommentText] = useState('');
   const [header, setHeader] = useState(props.header);
   const [text, setText] = useState(props.text);
@@ -42,44 +42,6 @@ function ShowCardPopup(props: {
         props.OnClose();
       }
     });
-  }
-
-  function onHeaderValueChange(e: React.FormEvent<HTMLInputElement>): void {
-    if (e.currentTarget.value !== '') {
-      setHeader(e.currentTarget.value);
-      setHeaderString(e.currentTarget.value);
-    } else {
-      setHeader('');
-      setHeaderString(' ');
-    }
-  }
-
-  function onHeaderSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (headerString !== '') {
-      props.onHeaderChange(props.id, headerString);
-      setHeader(headerString);
-    }
-    setHeaderString('');
-  }
-
-  function onTextValueChange(e: React.FormEvent<HTMLTextAreaElement>): void {
-    if (e.currentTarget.value !== '') {
-      setText(e.currentTarget.value);
-      setTextString(e.currentTarget.value);
-    } else {
-      setText('');
-      setTextString(' ');
-    }
-  }
-
-  function onTextSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (textString !== '') {
-      props.onTextChange(props.id, textString);
-      setText(textString);
-    }
-    setTextString('');
   }
 
   function onCommentValueChange(e: React.FormEvent<HTMLInputElement>): void {
@@ -102,13 +64,13 @@ function ShowCardPopup(props: {
   }
 
   let headerTop: JSX.Element;
-  if (headerString == '') {
+  if (!headerChange) {
     headerTop = (
       <div className="show-card__header-wrapper">
-        <h2 className="show-card__header">{props.header}</h2>
+        <h2 className="show-card__header">{header}</h2>
         <div
           onClick={() => {
-            setHeaderString(' ');
+            setHeaderChange(true);
           }}
           className="show-card__header-chenge-btn">
           <img
@@ -123,30 +85,28 @@ function ShowCardPopup(props: {
     );
   } else {
     headerTop = (
-      <div className="show-card__header-wrapper">
-        <form
-          onSubmit={onHeaderSubmit}
-          className="show-card__change-header-form">
-          <input
-            value={header}
-            onChange={onHeaderValueChange}
-            className="show-card__change-header-inp"
-          />
-          <button type="submit" className="show-card__change-header-btn">
-            OK
-          </button>
-        </form>
-      </div>
+      <CardHeaderChange
+        header={header}
+        setHeader={(header: string) => {
+          setHeader(header);
+        }}
+        onHeaderChange={(header: string) => {
+          props.onHeaderChange(props.id, header);
+        }}
+        setHeaderChange={(status: boolean) => {
+          setHeaderChange(status);
+        }}
+      />
     );
   }
 
   let cardText: JSX.Element;
-  if (textString == '') {
+  if (!textChange) {
     cardText = (
       <>
         <div
           onClick={() => {
-            setTextString(' ');
+            setTextChange(true);
           }}
           className="show-card__text-chenge-btn">
           <img
@@ -155,26 +115,25 @@ function ShowCardPopup(props: {
             className="show-card__text-chenge-btn-img"
           />
         </div>
-        <p className="show-card__text">{props.text}</p>
+        <p className="show-card__text">{text}</p>
       </>
     );
   } else {
     cardText = (
-      <>
-        <form onSubmit={onTextSubmit} className="show-card__change-text-form">
-          <textarea
-            onChange={onTextValueChange}
-            className="show-card__change-text-inp"
-            value={text}
-          />
-          <button type="submit" className="show-card__change-text-btn">
-            OK
-          </button>
-        </form>
-      </>
+      <CardTextChange
+        text={text}
+        setText={(text: string) => {
+          setText(text);
+        }}
+        onTextChange={(text: string) => {
+          props.onTextChange(props.id, text);
+        }}
+        setTextChange={(status: boolean) => {
+          setTextChange(status);
+        }}
+      />
     );
   }
-
   const comments = props.cardComments.map(
     (item: { id: string; author: string; text: string; card: string }) => {
       if (item) {

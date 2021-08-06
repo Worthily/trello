@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import dellImg from '../../assets/img/delete.svg';
 import changeBtn from '../../assets/img/change-white.png';
+import CommentChange from '../../ui/CommentChange';
 
 function Comment(props: {
   id: string;
@@ -16,20 +17,7 @@ function Comment(props: {
     setChange(true);
   }
 
-  function onValueChange(e: React.FormEvent<HTMLTextAreaElement>): void {
-    setText(e.currentTarget.value);
-  }
-
-  function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    const test = text.replace(/\s/g, '');
-    if (test !== '') {
-      props.onChange(props.id, text);
-      setChange(false);
-    }
-  }
-
-  const { id, author, onDelete } = props;
+  const { id, author, onDelete, onChange } = props;
   let commentBody: JSX.Element;
 
   if (change == false) {
@@ -61,13 +49,15 @@ function Comment(props: {
     );
   } else {
     commentBody = (
-      <form onSubmit={onSubmit} className="comment__form">
-        <textarea
-          value={text}
-          onChange={onValueChange}
-          className="comment__text"></textarea>
-        <button className="comment__submit-btn">ОК</button>
-      </form>
+      <CommentChange
+        id={id}
+        text={text}
+        setChange={setChange}
+        onChange={onChange}
+        setText={(text: string) => {
+          setText(text);
+        }}
+      />
     );
   }
 
