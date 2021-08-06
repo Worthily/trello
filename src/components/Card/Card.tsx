@@ -4,8 +4,6 @@ import notCheckImg from '../../assets/img/viewblack.png';
 import checkImg from '../../assets/img/viewgreen.png';
 import dellImg from '../../assets/img/delete.svg';
 
-// eslint-disable-next-line
-
 function Card(props: {
   header: string;
   text: string;
