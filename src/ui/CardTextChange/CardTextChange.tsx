@@ -1,0 +1,38 @@
+import React from 'react';
+
+function CardTextChange(props: {
+  text: string;
+  setText(header: string): void;
+  onTextChange(header: string): void;
+  setTextChange(status: boolean): void;
+}) {
+  function onTextValueChange(e: React.FormEvent<HTMLTextAreaElement>): void {
+    if (e.currentTarget.value !== '') {
+      props.setText(e.currentTarget.value);
+    } else {
+      props.setText('');
+    }
+  }
+
+  function onTextSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (props.text !== '') {
+      props.onTextChange(props.text);
+      props.setText(props.text);
+      props.setTextChange(false);
+    }
+  }
+  return (
+    <form onSubmit={onTextSubmit} className="show-card__change-text-form">
+      <textarea
+        onChange={onTextValueChange}
+        className="show-card__change-text-inp"
+        value={props.text}
+      />
+      <button type="submit" className="show-card__change-text-btn">
+        OK
+      </button>
+    </form>
+  );
+}
+export default CardTextChange;

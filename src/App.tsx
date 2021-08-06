@@ -377,8 +377,6 @@ function App() {
         OnClose={onCloseCardPopup}
         listener={listenerESC}
         addListener={addListener}
-        headerString=""
-        textString=""
         onHeaderChange={changeCardHeader}
         onTextChange={changeCardText}
         cardComments={cardComments}
