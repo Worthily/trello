@@ -1,6 +1,5 @@
 import React from 'react';
 
-// eslint-disable-next-line
 function AddCardBtn(props: { createCard(): void }) {
   const { createCard } = props;
 

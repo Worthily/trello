@@ -3,103 +3,14 @@ import Column from './components/Column';
 import LoginPopup from './components/LoginPopup';
 import CreateCard from './components/CreateCard';
 import ShowCardPopup from './components/ShowCardPopup';
+import StorageServise from './store/StorageServise';
 
 function App() {
-  let userLoc: string;
-  let cardsLoc: Array<{
-    id: string;
-    header: string;
-    text: string;
-    checked: boolean;
-    author: string;
-    status: string;
-  }>;
-
-  if (localStorage.getItem('user') != null) {
-    userLoc = localStorage.getItem('user') as string;
-  } else {
-    userLoc = '';
-  }
-
-  if (localStorage.getItem('cards') != null) {
-    const cardsStr = localStorage.getItem('cards') as string;
-    cardsLoc = JSON.parse(cardsStr) as Array<{
-      id: string;
-      header: string;
-      text: string;
-      checked: boolean;
-      author: string;
-      status: string;
-    }>;
-  } else {
-    cardsLoc = [
-      {
-        id: 'w1',
-        header: 'Отчет',
-        text: 'Лишь сделанные на базе интернет-аналитики выводы ассоциативно распределены по отраслям. Как принято считать, акционеры крупнейших компаний освещают чрезвычайно интересные особенности картины в целом, однако',
-        checked: false,
-        author: 'Дмитрий',
-        status: 'ToDo',
-      },
-    ];
-  }
-
-  let columnsLoc: Array<{
-    id: string;
-    header: string;
-  }>;
-
-  if (localStorage.getItem('columns') != null) {
-    const columnsStr = localStorage.getItem('columns') as string;
-    columnsLoc = JSON.parse(columnsStr) as Array<{
-      id: string;
-      header: string;
-    }>;
-  } else {
-    columnsLoc = [
-      { id: 'ToDo', header: 'To Do' },
-      { id: 'InProgress', header: 'In progress' },
-      { id: 'Testing', header: 'Testing' },
-      { id: 'Done', header: 'Done' },
-    ];
-  }
-
-  let commentsLoc: Array<{
-    id: string;
-    author: string;
-    text: string;
-    card: string;
-  }>;
-
-  if (localStorage.getItem('comments') != null) {
-    const commentsStr = localStorage.getItem('comments') as string;
-    commentsLoc = JSON.parse(commentsStr) as Array<{
-      id: string;
-      author: string;
-      text: string;
-      card: string;
-    }>;
-  } else {
-    commentsLoc = [
-      {
-        id: 'c1',
-        author: 'Димасик',
-        text: 'деланные на базе интернет-аналитики выводы ассоциативно распределены',
-        card: 'w1',
-      },
-      {
-        id: 'c2',
-        author: 'Димасик',
-        text: 'деланные на базе интернет-аналитики выводы ассоциативно распределены',
-        card: 'w1',
-      },
-    ];
-  }
-
-  const [user, setUser] = useState(userLoc);
-  const [cards, setCards] = useState(cardsLoc);
-  const [comments, setComments] = useState(commentsLoc);
-  const [columns, setColumns] = useState(columnsLoc);
+  const appStorage = new StorageServise('user', 'cards', 'comments', 'columns');
+  const [user, setUser] = useState(appStorage.getUser());
+  const [cards, setCards] = useState(appStorage.getCards());
+  const [comments, setComments] = useState(appStorage.getComments);
+  const [columns, setColumns] = useState(appStorage.getColumns());
   const [createCardId, setCreateCardId] = useState('');
   const [showCardId, setShowCardId] = useState('');
   const [listenerESC, setListenerESC] = useState(false);
@@ -110,7 +21,7 @@ function App() {
     const after = cards.slice(index + 1);
     const changedCard = { ...cards[index], checked: !cards[index].checked };
     const newArr = [...before, changedCard, ...after];
-    localStorage.setItem('cards', JSON.stringify(newArr));
+    appStorage.setCards(newArr);
     setCards(newArr);
   }
 
@@ -127,8 +38,7 @@ function App() {
     newArr = newArr.filter((elem) => {
       return elem.id != id;
     });
-
-    localStorage.setItem('cards', JSON.stringify(newArr));
+    appStorage.setCards(newArr);
     setCards(newArr);
 
     const newshowCardId = '';
@@ -146,9 +56,8 @@ function App() {
 
   function getUser(userName: string): void {
     if (userName !== user) {
-      const userLogin = userName;
-      localStorage.setItem('user', userName);
-      setUser(userLogin);
+      appStorage.setUser(userName);
+      setUser(userName);
     }
   }
 
@@ -164,7 +73,7 @@ function App() {
 
       changedColumn.header = header;
       const newArr = [...before, changedColumn, ...after];
-      localStorage.setItem('columns', JSON.stringify(newArr));
+      appStorage.setColumns(newArr);
       setColumns(newArr);
     }
   }
@@ -204,7 +113,7 @@ function App() {
       };
 
       const newCards = [...cards, card];
-      localStorage.setItem('cards', JSON.stringify(newCards));
+      appStorage.setCards(newCards);
       const newCreateCardId = '';
       setCards(newCards);
       setCreateCardId(newCreateCardId);
@@ -232,7 +141,7 @@ function App() {
       const after = cards.slice(index + 1);
       newCard.header = header;
       const newArr = [...before, newCard, ...after];
-      localStorage.setItem('cards', JSON.stringify(newArr));
+      appStorage.setCards(newArr);
       setCards(newArr);
     }
   }
@@ -246,7 +155,7 @@ function App() {
       const after = cards.slice(index + 1);
       newCard.text = text;
       const newArr = [...before, newCard, ...after];
-      localStorage.setItem('cards', JSON.stringify(newArr));
+      appStorage.setCards(newArr);
       setCards(newArr);
     }
   }
@@ -263,7 +172,7 @@ function App() {
         return elem.id != idItem;
       });
     }
-    localStorage.setItem('comments', JSON.stringify(newArr));
+    appStorage.setComments(newArr);
     setComments(newArr);
   }
 
@@ -276,7 +185,7 @@ function App() {
       const after = comments.slice(index + 1);
       newCard.text = text;
       const newArr = [...before, newCard, ...after];
-      localStorage.setItem('comments', JSON.stringify(newArr));
+      appStorage.setComments(newArr);
       setComments(newArr);
     }
   }
@@ -308,7 +217,7 @@ function App() {
       };
 
       const newArr = [...comments, comment];
-      localStorage.setItem('comments', JSON.stringify(newArr));
+      appStorage.setComments(newArr);
       setComments(newArr);
     }
   }

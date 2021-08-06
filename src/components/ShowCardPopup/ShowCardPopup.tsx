@@ -36,7 +36,7 @@ function ShowCardPopup(props: {
   const [text, setText] = useState(props.text);
 
   function addListen() {
-    document.addEventListener('keydown', (event) => {
+    document.addEventListener('keyup', (event) => {
       if (event.keyCode === 27) {
         props.addListener();
         props.OnClose();

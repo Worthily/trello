@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-// eslint-disable-next-line
 function CreateCard(props: { createCard(header: string, text: string): void }) {
   const [header, setHeader] = useState('');
   const [text, setText] = useState('');

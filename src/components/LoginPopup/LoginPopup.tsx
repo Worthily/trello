@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-// eslint-disable-next-line
 function LoginPopup(props: { setUserName(user: string): void; user: string }) {
   const [user, setUser] = useState('');
 
