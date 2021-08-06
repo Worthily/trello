@@ -6,7 +6,7 @@ function Comment(props: {
   id: string;
   author: string;
   text: string;
-  onDelete(id: string): void;
+  onDelete(id: string[]): void;
   onChange(id: string, text: string): void;
 }) {
   const [text, setText] = useState(props.text);
@@ -49,7 +49,9 @@ function Comment(props: {
           </div>
           <div
             onClick={() => {
-              onDelete(id);
+              const idArr: string[] = [];
+              idArr.push(id);
+              onDelete(idArr);
             }}
             className="comment__dell-btn">
             <img src={dellImg} alt="delete" className="comment__dell-btn-img" />

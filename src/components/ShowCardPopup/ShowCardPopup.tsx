@@ -25,7 +25,7 @@ function ShowCardPopup(props: {
     text: string;
     card: string;
   }>;
-  onCommentDell(id: string): void;
+  onCommentDell(id: string[]): void;
   onCommentChange(id: string, text: string): void;
   onCommentAdd(id: string, text: string): void;
 }) {
