@@ -134,11 +134,6 @@ function App() {
     const newshowCardId = '';
     setShowCardId(newshowCardId);
 
-    // const index = cards.findIndex((elem) => elem.id === id);
-    // const before = cards.slice(0, index);
-    // const after = cards.slice(index + 1);
-    // const newArr = [...before, ...after];
-
     const commentsId: string[] = [];
     for (const item of comments) {
       if (item.card == id) {
@@ -157,18 +152,18 @@ function App() {
     }
   }
 
-  function getHeader(header: string, id: string): void {
+  function getHeader(id: string, header: string): void {
     const test = header.replace(/\s/g, '');
     if (test !== '') {
       const index = columns.findIndex((elem) => elem.id === id);
       const before = columns.slice(0, index);
       const after = columns.slice(index + 1);
-      const changedCard = {
+      const changedColumn = {
         ...columns[index],
       };
 
-      changedCard.header = header;
-      const newArr = [...before, changedCard, ...after];
+      changedColumn.header = header;
+      const newArr = [...before, changedColumn, ...after];
       localStorage.setItem('columns', JSON.stringify(newArr));
       setColumns(newArr);
     }

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Card from '../Card';
 import AddCardBtn from '../../ui/AddCardBtn';
 import changeImg from '../../assets/img/change.png';
+import ColumnHeaderChange from '../../ui/ColumnHeaderChange';
 
 function Column(props: {
   id: string;
@@ -28,19 +29,6 @@ function Column(props: {
     setChange(!change);
   }
 
-  function onValueChange(e: React.FormEvent<HTMLInputElement>): void {
-    setHeader(e.currentTarget.value);
-  }
-
-  function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
-
-    if (header !== '') {
-      props.getHeader(header, props.id);
-      setChange(false);
-    }
-  }
-
   const {
     cards,
     OnDelete,
@@ -62,16 +50,18 @@ function Column(props: {
 
   if (change) {
     heading = (
-      <div className="column__header-wrapper">
-        <form onSubmit={onSubmit} className="column__form">
-          <input
-            onChange={onValueChange}
-            className="column__input"
-            value={header}
-          />
-          <button className="column__submit-btn">OK</button>
-        </form>
-      </div>
+      <ColumnHeaderChange
+        header={header}
+        setHeader={(header: string) => {
+          setHeader(header);
+        }}
+        getHeader={(header: string) => {
+          props.getHeader(props.id, header);
+        }}
+        setChange={(status: boolean) => {
+          setChange(status);
+        }}
+      />
     );
   }
 
