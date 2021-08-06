@@ -115,14 +115,38 @@ function App() {
   }
 
   function onDelete(id: string): void {
-    const index = cards.findIndex((elem) => elem.id === id);
-    const before = cards.slice(0, index);
-    const after = cards.slice(index + 1);
-    const newArr = [...before, ...after];
+    let newArr: Array<{
+      id: string;
+      header: string;
+      text: string;
+      checked: boolean;
+      author: string;
+      status: string;
+    }> = cards;
+
+    newArr = newArr.filter((elem) => {
+      return elem.id != id;
+    });
+
     localStorage.setItem('cards', JSON.stringify(newArr));
+    setCards(newArr);
+
     const newshowCardId = '';
     setShowCardId(newshowCardId);
-    setCards(newArr);
+
+    // const index = cards.findIndex((elem) => elem.id === id);
+    // const before = cards.slice(0, index);
+    // const after = cards.slice(index + 1);
+    // const newArr = [...before, ...after];
+
+    const commentsId: string[] = [];
+    for (const item of comments) {
+      if (item.card == id) {
+        commentsId.push(item.id);
+      }
+    }
+
+    onCommentDell(commentsId);
   }
 
   function getUser(userName: string): void {
@@ -232,11 +256,18 @@ function App() {
     }
   }
 
-  function onCommentDell(id: string) {
-    const index = comments.findIndex((elem) => elem.id === id);
-    const before = comments.slice(0, index);
-    const after = comments.slice(index + 1);
-    const newArr = [...before, ...after];
+  function onCommentDell(id: string[]) {
+    let newArr: Array<{
+      id: string;
+      author: string;
+      text: string;
+      card: string;
+    }> = comments;
+    for (const idItem of id) {
+      newArr = newArr.filter((elem) => {
+        return elem.id != idItem;
+      });
+    }
     localStorage.setItem('comments', JSON.stringify(newArr));
     setComments(newArr);
   }
@@ -359,7 +390,7 @@ function App() {
   } else {
     showCardPopup = <></>;
   }
-  const column = columns.map((item) => {
+  const columnItems = columns.map((item) => {
     return (
       <li key={item.id} className="app__column-item">
         <Column
@@ -381,7 +412,7 @@ function App() {
       {showCardPopup}
       {createCardPopup}
       {UserPopup}
-      <ul className="app__column-wrapper">{column}</ul>
+      <ul className="app__column-wrapper">{columnItems}</ul>
     </header>
   );
 }
