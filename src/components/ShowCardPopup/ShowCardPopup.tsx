@@ -6,6 +6,7 @@ import changeBtn from '../../assets/img/change-white.png';
 import Comment from '../Comment';
 import CardHeaderChange from '../../ui/CardHeaderChange';
 import CardTextChange from '../../ui/CardTextChange';
+import { comments } from '../../types';
 
 function ShowCardPopup(props: {
   id: string;
@@ -19,12 +20,7 @@ function ShowCardPopup(props: {
   addListener(): void;
   onHeaderChange(id: string, header: string): void;
   onTextChange(id: string, text: string): void;
-  cardComments: Array<{
-    id: string;
-    author: string;
-    text: string;
-    card: string;
-  }>;
+  cardComments: comments;
   onCommentDell(id: string[]): void;
   onCommentChange(id: string, text: string): void;
   onCommentAdd(id: string, text: string): void;
@@ -134,6 +130,7 @@ function ShowCardPopup(props: {
       />
     );
   }
+
   const comments = props.cardComments.map(
     (item: { id: string; author: string; text: string; card: string }) => {
       if (item) {

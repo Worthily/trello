@@ -22,6 +22,7 @@ function CardTextChange(props: {
       props.setTextChange(false);
     }
   }
+
   return (
     <form onSubmit={onTextSubmit} className="show-card__change-text-form">
       <textarea
@@ -35,4 +36,5 @@ function CardTextChange(props: {
     </form>
   );
 }
+
 export default CardTextChange;

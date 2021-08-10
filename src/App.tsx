@@ -4,12 +4,13 @@ import LoginPopup from './components/LoginPopup';
 import CreateCard from './components/CreateCard';
 import ShowCardPopup from './components/ShowCardPopup';
 import StorageServise from './store/StorageServise';
+import { cards, comments, user } from './types';
 
 function App() {
-  const appStorage = new StorageServise('user', 'cards', 'comments', 'columns');
+  const appStorage = new StorageServise();
   const [user, setUser] = useState(appStorage.getUser());
   const [cards, setCards] = useState(appStorage.getCards());
-  const [comments, setComments] = useState(appStorage.getComments);
+  const [comments, setComments] = useState(appStorage.getComments());
   const [columns, setColumns] = useState(appStorage.getColumns());
   const [createCardId, setCreateCardId] = useState('');
   const [showCardId, setShowCardId] = useState('');
@@ -26,14 +27,7 @@ function App() {
   }
 
   function onDelete(id: string): void {
-    let newArr: Array<{
-      id: string;
-      header: string;
-      text: string;
-      checked: boolean;
-      author: string;
-      status: string;
-    }> = cards;
+    let newArr: cards = cards;
 
     newArr = newArr.filter((elem) => {
       return elem.id != id;
@@ -54,7 +48,7 @@ function App() {
     onCommentDell(commentsId);
   }
 
-  function getUser(userName: string): void {
+  function getUser(userName: user): void {
     if (userName !== user) {
       appStorage.setUser(userName);
       setUser(userName);
@@ -161,12 +155,7 @@ function App() {
   }
 
   function onCommentDell(id: string[]) {
-    let newArr: Array<{
-      id: string;
-      author: string;
-      text: string;
-      card: string;
-    }> = comments;
+    let newArr: comments = comments;
     for (const idItem of id) {
       newArr = newArr.filter((elem) => {
         return elem.id != idItem;
@@ -257,12 +246,7 @@ function App() {
     const card = cards[cards.findIndex((elem) => elem.id === showCardId)];
     const column =
       columns[columns.findIndex((item) => card.status === item.id)];
-    const cardComments: Array<{
-      id: string;
-      author: string;
-      text: string;
-      card: string;
-    }> = [];
+    const cardComments: comments = [];
 
     for (let i = 0; i < comments.length; i++) {
       if (card.id === comments[i].card) {
@@ -292,6 +276,7 @@ function App() {
   } else {
     showCardPopup = <></>;
   }
+
   const columnItems = columns.map((item) => {
     return (
       <li key={item.id} className="app__column-item">
@@ -309,6 +294,7 @@ function App() {
       </li>
     );
   });
+
   return (
     <header className="app">
       {showCardPopup}

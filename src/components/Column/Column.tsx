@@ -3,17 +3,11 @@ import Card from '../Card';
 import AddCardBtn from '../../ui/AddCardBtn';
 import changeImg from '../../assets/img/change.png';
 import ColumnHeaderChange from '../../ui/ColumnHeaderChange';
+import { cards } from '../../types';
 
 function Column(props: {
   id: string;
-  cards: Array<{
-    id: string;
-    header: string;
-    text: string;
-    checked: boolean;
-    author: string;
-    status: string;
-  }>;
+  cards: cards;
   header: string;
   OnDelete(id: string): void;
   onCheck(id: string): void;
