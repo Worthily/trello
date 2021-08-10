@@ -1,25 +1,15 @@
+import { cards, columns, comments, user } from '../types';
+
 class StorageServise {
-  private userKey: string;
+  private userKey = 'user';
   private cardsKey = 'cards';
   private commentsKey = 'comments';
   private columnsKey = 'columns';
 
-  constructor(
-    userKey: string,
-    cardsKey: string,
-    commentsKey: string,
-    columnsKey: string,
-  ) {
-    this.userKey = userKey;
-    this.cardsKey = cardsKey;
-    this.commentsKey = commentsKey;
-    this.columnsKey = columnsKey;
-  }
-
   getUser() {
-    let user: string;
+    let user: user;
     if (localStorage.getItem(this.userKey) != null) {
-      user = localStorage.getItem(this.userKey) as string;
+      user = localStorage.getItem(this.userKey) as user;
     } else {
       localStorage.setItem(this.userKey, '');
       user = '';
@@ -27,29 +17,15 @@ class StorageServise {
     return user;
   }
 
-  setUser(user: string) {
+  setUser(user: user) {
     localStorage.setItem(this.userKey, user);
   }
 
   getCards() {
-    let cards: Array<{
-      id: string;
-      header: string;
-      text: string;
-      checked: boolean;
-      author: string;
-      status: string;
-    }>;
+    let cards: cards;
     if (localStorage.getItem(this.cardsKey) != null) {
-      const cardsStr = localStorage.getItem(this.cardsKey) as string;
-      cards = JSON.parse(cardsStr) as Array<{
-        id: string;
-        header: string;
-        text: string;
-        checked: boolean;
-        author: string;
-        status: string;
-      }>;
+      const cardsStr = localStorage.getItem(this.cardsKey) as user;
+      cards = JSON.parse(cardsStr) as cards;
     } else {
       cards = [
         {
@@ -66,30 +42,16 @@ class StorageServise {
     return cards;
   }
 
-  setCards(
-    cards: Array<{
-      id: string;
-      header: string;
-      text: string;
-      checked: boolean;
-      author: string;
-      status: string;
-    }>,
-  ) {
+  setCards(cards: cards) {
     localStorage.setItem(this.cardsKey, JSON.stringify(cards));
   }
+
   getColumns() {
-    let columns: Array<{
-      id: string;
-      header: string;
-    }>;
+    let columns: columns;
 
     if (localStorage.getItem(this.columnsKey) != null) {
       const columnsStr = localStorage.getItem(this.columnsKey) as string;
-      columns = JSON.parse(columnsStr) as Array<{
-        id: string;
-        header: string;
-      }>;
+      columns = JSON.parse(columnsStr) as columns;
     } else {
       columns = [
         { id: 'ToDo', header: 'To Do' },
@@ -102,30 +64,16 @@ class StorageServise {
     return columns;
   }
 
-  setColumns(
-    columns: Array<{
-      id: string;
-      header: string;
-    }>,
-  ) {
+  setColumns(columns: columns) {
     localStorage.setItem(this.columnsKey, JSON.stringify(columns));
   }
-  getComments() {
-    let comments: Array<{
-      id: string;
-      author: string;
-      text: string;
-      card: string;
-    }>;
 
-    if (localStorage.getItem('comments') != null) {
-      const commentsStr = localStorage.getItem('comments') as string;
-      comments = JSON.parse(commentsStr) as Array<{
-        id: string;
-        author: string;
-        text: string;
-        card: string;
-      }>;
+  getComments() {
+    let comments: comments;
+
+    if (localStorage.getItem(this.commentsKey) != null) {
+      const commentsStr = localStorage.getItem(this.commentsKey) as string;
+      comments = JSON.parse(commentsStr) as comments;
     } else {
       comments = [
         {
@@ -141,19 +89,13 @@ class StorageServise {
           card: 'w1',
         },
       ];
-      localStorage.setItem('comments', JSON.stringify(comments));
+      localStorage.setItem(this.commentsKey, JSON.stringify(comments));
     }
     return comments;
   }
-  setComments(
-    comments: Array<{
-      id: string;
-      author: string;
-      text: string;
-      card: string;
-    }>,
-  ) {
-    localStorage.setItem('comments', JSON.stringify(comments));
+
+  setComments(comments: comments) {
+    localStorage.setItem(this.commentsKey, JSON.stringify(comments));
   }
 }
 
