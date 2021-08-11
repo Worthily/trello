@@ -16,18 +16,19 @@ function App() {
   const [showCardId, setShowCardId] = useState('');
   const [listenerESC, setListenerESC] = useState(false);
 
-  function onCheck(id: string): void {
-    const index = cards.findIndex((elem) => elem.id === id);
-    const before = cards.slice(0, index);
-    const after = cards.slice(index + 1);
-    const changedCard = { ...cards[index], checked: !cards[index].checked };
-    const newArr = [...before, changedCard, ...after];
+  function onCradChecked(id: string): void {
+    const newArr = cards.map((item) => {
+      if (item.id === id) {
+        return { ...item, checked: !item.checked };
+      }
+      return item;
+    });
     appStorage.setCards(newArr);
     setCards(newArr);
   }
 
-  function onDelete(id: string): void {
-    let newArr: cards = cards;
+  function onCardDelete(id: string): void {
+    let newArr: cards[] = cards;
 
     newArr = newArr.filter((elem) => {
       return elem.id != id;
@@ -55,24 +56,21 @@ function App() {
     }
   }
 
-  function getHeader(id: string, header: string): void {
+  function changeColumnTitle(id: string, header: string): void {
     const test = header.replace(/\s/g, '');
     if (test !== '') {
-      const index = columns.findIndex((elem) => elem.id === id);
-      const before = columns.slice(0, index);
-      const after = columns.slice(index + 1);
-      const changedColumn = {
-        ...columns[index],
-      };
-
-      changedColumn.header = header;
-      const newArr = [...before, changedColumn, ...after];
+      const newArr = columns.map((item) => {
+        if (item.id === id) {
+          return { ...item, header };
+        }
+        return item;
+      });
       appStorage.setColumns(newArr);
       setColumns(newArr);
     }
   }
 
-  function getCreateCardPopup(id: string): void {
+  function showCreateCardPopup(id: string): void {
     setCreateCardId(id);
   }
 
@@ -114,7 +112,7 @@ function App() {
     }
   }
 
-  function onShowPopup(id: string): void {
+  function onShowCardPopup(id: string): void {
     setShowCardId(id);
   }
 
@@ -129,12 +127,12 @@ function App() {
   function changeCardHeader(id: string, header: string) {
     const test = header.replace(/\s/g, '');
     if (test !== '') {
-      const index = cards.findIndex((elem) => elem.id === id);
-      const newCard = cards[index];
-      const before = cards.slice(0, index);
-      const after = cards.slice(index + 1);
-      newCard.header = header;
-      const newArr = [...before, newCard, ...after];
+      const newArr = cards.map((item) => {
+        if (item.id === id) {
+          return { ...item, header };
+        }
+        return item;
+      });
       appStorage.setCards(newArr);
       setCards(newArr);
     }
@@ -143,19 +141,19 @@ function App() {
   function changeCardText(id: string, text: string) {
     const test = text.replace(/\s/g, '');
     if (test !== '') {
-      const index = cards.findIndex((elem) => elem.id === id);
-      const newCard = cards[index];
-      const before = cards.slice(0, index);
-      const after = cards.slice(index + 1);
-      newCard.text = text;
-      const newArr = [...before, newCard, ...after];
+      const newArr = cards.map((item) => {
+        if (item.id === id) {
+          return { ...item, text };
+        }
+        return item;
+      });
       appStorage.setCards(newArr);
       setCards(newArr);
     }
   }
 
   function onCommentDell(id: string[]) {
-    let newArr: comments = comments;
+    let newArr: comments[] = comments;
     for (const idItem of id) {
       newArr = newArr.filter((elem) => {
         return elem.id != idItem;
@@ -168,12 +166,12 @@ function App() {
   function onCommentChange(id: string, text: string) {
     const test = text.replace(/\s/g, '');
     if (test !== '') {
-      const index = comments.findIndex((elem) => elem.id === id);
-      const newCard = comments[index];
-      const before = comments.slice(0, index);
-      const after = comments.slice(index + 1);
-      newCard.text = text;
-      const newArr = [...before, newCard, ...after];
+      const newArr = comments.map((item) => {
+        if (item.id === id) {
+          return { ...item, text };
+        }
+        return item;
+      });
       appStorage.setComments(newArr);
       setComments(newArr);
     }
@@ -241,38 +239,38 @@ function App() {
     createCardPopup = <></>;
   }
 
-  let showCardPopup: JSX.Element;
+  let showCardPopup: JSX.Element = <></>;
   if (showCardId !== '') {
-    const card = cards[cards.findIndex((elem) => elem.id === showCardId)];
-    const column =
-      columns[columns.findIndex((item) => card.status === item.id)];
-    const cardComments: comments = [];
+    const card = cards.find((elem) => elem.id === showCardId);
+    if (card != undefined) {
+      const column = columns.find((item) => card.status === item.id);
+      if (column != undefined) {
+        const cardComments: comments[] = [];
 
-    for (let i = 0; i < comments.length; i++) {
-      if (card.id === comments[i].card) {
-        cardComments.push(comments[i]);
+        for (let i = 0; i < comments.length; i++) {
+          if (card.id === comments[i].card) {
+            cardComments.push(comments[i]);
+          }
+        }
+
+        showCardPopup = (
+          <ShowCardPopup
+            card={card}
+            column={column.header}
+            OnDelete={onCardDelete}
+            OnClose={onCloseCardPopup}
+            listener={listenerESC}
+            addListener={addListener}
+            onHeaderChange={changeCardHeader}
+            onTextChange={changeCardText}
+            cardComments={cardComments}
+            onCommentDell={onCommentDell}
+            onCommentChange={onCommentChange}
+            onCommentAdd={onCommentAdd}
+          />
+        );
       }
     }
-
-    showCardPopup = (
-      <ShowCardPopup
-        id={card.id}
-        header={card.header}
-        text={card.text}
-        author={card.author}
-        column={column.header}
-        OnDelete={onDelete}
-        OnClose={onCloseCardPopup}
-        listener={listenerESC}
-        addListener={addListener}
-        onHeaderChange={changeCardHeader}
-        onTextChange={changeCardText}
-        cardComments={cardComments}
-        onCommentDell={onCommentDell}
-        onCommentChange={onCommentChange}
-        onCommentAdd={onCommentAdd}
-      />
-    );
   } else {
     showCardPopup = <></>;
   }
@@ -281,14 +279,13 @@ function App() {
     return (
       <li key={item.id} className="app__column-item">
         <Column
-          id={item.id}
+          column={item}
           cards={cards}
-          header={item.header}
-          OnDelete={onDelete}
-          onCheck={onCheck}
-          getHeader={getHeader}
-          createCard={getCreateCardPopup}
-          onShowPopup={onShowPopup}
+          OnDelete={onCardDelete}
+          onCheck={onCradChecked}
+          getHeader={changeColumnTitle}
+          createCard={showCreateCardPopup}
+          onShowPopup={onShowCardPopup}
           commentsCount={commentsCount}
         />
       </li>

@@ -7,11 +7,9 @@ class StorageServise {
   private columnsKey = 'columns';
 
   getUser() {
-    let user: user;
-    if (localStorage.getItem(this.userKey) != null) {
-      user = localStorage.getItem(this.userKey) as user;
-    } else {
-      localStorage.setItem(this.userKey, '');
+    let user = localStorage.getItem(this.userKey);
+    if (user == null) {
+      this.setUser('');
       user = '';
     }
     return user;
@@ -22,10 +20,10 @@ class StorageServise {
   }
 
   getCards() {
-    let cards: cards;
-    if (localStorage.getItem(this.cardsKey) != null) {
-      const cardsStr = localStorage.getItem(this.cardsKey) as user;
-      cards = JSON.parse(cardsStr) as cards;
+    let cards: cards[];
+    const cardsStr = localStorage.getItem(this.cardsKey);
+    if (cardsStr != null) {
+      cards = JSON.parse(cardsStr);
     } else {
       cards = [
         {
@@ -37,21 +35,20 @@ class StorageServise {
           status: 'ToDo',
         },
       ];
-      localStorage.setItem(this.cardsKey, JSON.stringify(cards));
+      this.setCards(cards);
     }
     return cards;
   }
 
-  setCards(cards: cards) {
+  setCards(cards: cards[]) {
     localStorage.setItem(this.cardsKey, JSON.stringify(cards));
   }
 
   getColumns() {
-    let columns: columns;
-
-    if (localStorage.getItem(this.columnsKey) != null) {
-      const columnsStr = localStorage.getItem(this.columnsKey) as string;
-      columns = JSON.parse(columnsStr) as columns;
+    let columns: columns[];
+    const columnsStr = localStorage.getItem(this.columnsKey);
+    if (columnsStr != null) {
+      columns = JSON.parse(columnsStr);
     } else {
       columns = [
         { id: 'ToDo', header: 'To Do' },
@@ -59,21 +56,21 @@ class StorageServise {
         { id: 'Testing', header: 'Testing' },
         { id: 'Done', header: 'Done' },
       ];
-      localStorage.setItem(this.columnsKey, JSON.stringify(columns));
+      this.setColumns(columns);
     }
     return columns;
   }
 
-  setColumns(columns: columns) {
+  setColumns(columns: columns[]) {
     localStorage.setItem(this.columnsKey, JSON.stringify(columns));
   }
 
   getComments() {
-    let comments: comments;
+    let comments: comments[];
+    const commentsStr = localStorage.getItem(this.commentsKey);
 
-    if (localStorage.getItem(this.commentsKey) != null) {
-      const commentsStr = localStorage.getItem(this.commentsKey) as string;
-      comments = JSON.parse(commentsStr) as comments;
+    if (commentsStr != null) {
+      comments = JSON.parse(commentsStr);
     } else {
       comments = [
         {
@@ -89,12 +86,12 @@ class StorageServise {
           card: 'w1',
         },
       ];
-      localStorage.setItem(this.commentsKey, JSON.stringify(comments));
+      this.setComments(comments);
     }
     return comments;
   }
 
-  setComments(comments: comments) {
+  setComments(comments: comments[]) {
     localStorage.setItem(this.commentsKey, JSON.stringify(comments));
   }
 }

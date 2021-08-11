@@ -2,29 +2,28 @@ import React, { useState } from 'react';
 import dellImg from '../../assets/img/delete.svg';
 import changeBtn from '../../assets/img/change-white.png';
 import CommentChange from '../../ui/CommentChange';
+import { comments } from '../../types';
 
 function Comment(props: {
-  id: string;
-  author: string;
-  text: string;
+  comment: comments;
   onDelete(id: string[]): void;
   onChange(id: string, text: string): void;
 }) {
-  const [text, setText] = useState(props.text);
+  const { comment, onDelete, onChange } = props;
+  const [text, setText] = useState(comment.text);
   const [change, setChange] = useState(false);
 
   function onStartChange() {
     setChange(true);
   }
 
-  const { id, author, onDelete, onChange } = props;
   let commentBody: JSX.Element;
 
   if (change == false) {
     commentBody = (
       <>
         <div className="comment__text-wrapper">
-          <p className="comment__author">{author}</p>
+          <p className="comment__author">{comment.author}</p>
           <p className="comment__text">{text}</p>
         </div>
         <div className="comment__buttons-wrapper">
@@ -38,7 +37,7 @@ function Comment(props: {
           <div
             onClick={() => {
               const idArr: string[] = [];
-              idArr.push(id);
+              idArr.push(comment.id);
               onDelete(idArr);
             }}
             className="comment__dell-btn">
@@ -50,7 +49,7 @@ function Comment(props: {
   } else {
     commentBody = (
       <CommentChange
-        id={id}
+        id={comment.id}
         text={text}
         setChange={setChange}
         onChange={onChange}
