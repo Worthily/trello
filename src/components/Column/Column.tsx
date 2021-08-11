@@ -3,12 +3,11 @@ import Card from '../Card';
 import AddCardBtn from '../../ui/AddCardBtn';
 import changeImg from '../../assets/img/change.png';
 import ColumnHeaderChange from '../../ui/ColumnHeaderChange';
-import { cards } from '../../types';
+import { cards, columns } from '../../types';
 
 function Column(props: {
-  id: string;
-  cards: cards;
-  header: string;
+  column: columns;
+  cards: cards[];
   OnDelete(id: string): void;
   onCheck(id: string): void;
   getHeader(id: string, header: string): void;
@@ -16,26 +15,19 @@ function Column(props: {
   onShowPopup(id: string): void;
   commentsCount(id: string): number;
 }) {
-  const [header, setHeader] = useState(props.header);
+  const { id, header } = props.column;
+  const { cards, OnDelete, onCheck, createCard, onShowPopup, commentsCount } =
+    props;
+  const [columnHeader, setHeader] = useState(header);
   const [change, setChange] = useState(false);
 
   function onChangeBtnClick(): void {
     setChange(!change);
   }
 
-  const {
-    cards,
-    OnDelete,
-    onCheck,
-    createCard,
-    id,
-    onShowPopup,
-    commentsCount,
-  } = props;
-
   let heading = (
     <div className="column__header-wrapper">
-      <h2 className="column__header">{props.header}</h2>
+      <h2 className="column__header">{header}</h2>
       <div onClick={onChangeBtnClick} className="column__header-change-btn">
         <img src={changeImg} alt="change" />
       </div>
@@ -45,12 +37,12 @@ function Column(props: {
   if (change) {
     heading = (
       <ColumnHeaderChange
-        header={header}
+        header={columnHeader}
         setHeader={(header: string) => {
           setHeader(header);
         }}
         getHeader={(header: string) => {
-          props.getHeader(props.id, header);
+          props.getHeader(id, header);
         }}
         setChange={(status: boolean) => {
           setChange(status);
@@ -64,10 +56,7 @@ function Column(props: {
       return (
         <li key={item.id} className="column__card-item">
           <Card
-            header={item.header}
-            text={item.text}
-            checked={item.checked}
-            author={item.author}
+            card={item}
             OnDelete={() => OnDelete(item.id)}
             onCheck={() => onCheck(item.id)}
             onShowPopup={() => onShowPopup(item.id)}

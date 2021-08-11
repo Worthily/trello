@@ -6,30 +6,28 @@ import changeBtn from '../../assets/img/change-white.png';
 import Comment from '../Comment';
 import CardHeaderChange from '../../ui/CardHeaderChange';
 import CardTextChange from '../../ui/CardTextChange';
-import { comments } from '../../types';
+import { comments, cards } from '../../types';
 
 function ShowCardPopup(props: {
-  id: string;
-  header: string;
-  text: string;
-  author: string;
   column: string;
+  card: cards;
+  cardComments: comments[];
+  listener: boolean;
   OnDelete(id: string): void;
   OnClose(): void;
-  listener: boolean;
   addListener(): void;
   onHeaderChange(id: string, header: string): void;
   onTextChange(id: string, text: string): void;
-  cardComments: comments;
   onCommentDell(id: string[]): void;
   onCommentChange(id: string, text: string): void;
   onCommentAdd(id: string, text: string): void;
 }) {
+  const { id, header, text, author } = props.card;
   const [headerChange, setHeaderChange] = useState(false);
   const [textChange, setTextChange] = useState(false);
   const [commentText, setCommentText] = useState('');
-  const [header, setHeader] = useState(props.header);
-  const [text, setText] = useState(props.text);
+  const [cardHeader, setHeader] = useState(header);
+  const [cardText, setText] = useState(text);
 
   function addListen() {
     document.addEventListener('keyup', (event) => {
@@ -50,7 +48,7 @@ function ShowCardPopup(props: {
     e.preventDefault();
     const test = commentText.replace(/\s/g, '');
     if (test !== '') {
-      props.onCommentAdd(props.id, commentText);
+      props.onCommentAdd(id, commentText);
     }
     setCommentText('');
   }
@@ -75,19 +73,19 @@ function ShowCardPopup(props: {
             className="show-card__header-chenge-btn-img"
           />
         </div>
-        <p className="show-card__author">{props.author}</p>
+        <p className="show-card__author">{author}</p>
         <p className="show-card__column">Колонка: {props.column}</p>
       </div>
     );
   } else {
     headerTop = (
       <CardHeaderChange
-        header={header}
+        header={cardHeader}
         setHeader={(header: string) => {
           setHeader(header);
         }}
         onHeaderChange={(header: string) => {
-          props.onHeaderChange(props.id, header);
+          props.onHeaderChange(id, header);
         }}
         setHeaderChange={(status: boolean) => {
           setHeaderChange(status);
@@ -96,9 +94,9 @@ function ShowCardPopup(props: {
     );
   }
 
-  let cardText: JSX.Element;
+  let cardTextElement: JSX.Element;
   if (!textChange) {
-    cardText = (
+    cardTextElement = (
       <>
         <div
           onClick={() => {
@@ -115,14 +113,14 @@ function ShowCardPopup(props: {
       </>
     );
   } else {
-    cardText = (
+    cardTextElement = (
       <CardTextChange
-        text={text}
+        text={cardText}
         setText={(text: string) => {
           setText(text);
         }}
         onTextChange={(text: string) => {
-          props.onTextChange(props.id, text);
+          props.onTextChange(id, text);
         }}
         setTextChange={(status: boolean) => {
           setTextChange(status);
@@ -137,9 +135,7 @@ function ShowCardPopup(props: {
         return (
           <li key={item.id} className="show-card__comment-item">
             <Comment
-              id={item.id}
-              author={item.author}
-              text={item.text}
+              comment={item}
               onDelete={props.onCommentDell}
               onChange={props.onCommentChange}
             />
@@ -155,7 +151,7 @@ function ShowCardPopup(props: {
         <div className="show-card__top">
           {headerTop}
           <div
-            onClick={() => props.OnDelete(props.id)}
+            onClick={() => props.OnDelete(id)}
             className="show-card__dell-btn">
             <img src={dellImg} alt="dell" className="show-card__dell-btn-img" />
           </div>
@@ -169,7 +165,7 @@ function ShowCardPopup(props: {
         </div>
         <div className="show-card__text-wrapper">
           <p className="show-card__text-prefix">Описание:</p>
-          {cardText}
+          {cardTextElement}
         </div>
         <form onSubmit={onCommentSubmit} className="show-card__comment-form">
           <input

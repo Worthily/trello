@@ -3,29 +3,18 @@ import commentImg from '../../assets/img/comment.png';
 import notCheckImg from '../../assets/img/viewblack.png';
 import checkImg from '../../assets/img/viewgreen.png';
 import dellImg from '../../assets/img/delete.svg';
+import { cards } from '../../types';
 
 function Card(props: {
-  header: string;
-  text: string;
-  checked: boolean;
-  author: string;
+  card: cards;
   OnDelete(): void;
   onCheck(): void;
   onShowPopup(): void;
   commentsCount(): number;
 }) {
-  const {
-    header,
-    text,
-    checked,
-    author,
-    OnDelete,
-    onCheck,
-    onShowPopup,
-    commentsCount,
-  } = props;
+  const { card, OnDelete, onCheck, onShowPopup, commentsCount } = props;
 
-  const btnImgSrc = checked ? checkImg : notCheckImg;
+  const btnImgSrc = card.checked ? checkImg : notCheckImg;
 
   let commentsCountSpan: JSX.Element;
   if (commentsCount() !== 0) {
@@ -39,10 +28,10 @@ function Card(props: {
   return (
     <div className="column__card card">
       <div onClick={onShowPopup} className="card__info-wrapper">
-        <h2 className="card__header">{header}</h2>
-        <p className="card__autor">{author}</p>
+        <h2 className="card__header">{card.header}</h2>
+        <p className="card__autor">{card.author}</p>
         <div className="card__text-wrapper">
-          <p className="card__text">{text}</p>
+          <p className="card__text">{card.text}</p>
         </div>
       </div>
       <div className="card__buttons-wrapper">
