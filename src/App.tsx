@@ -33,11 +33,10 @@ function App() {
     newArr = newArr.filter((elem) => {
       return elem.id != id;
     });
+
     appStorage.setCards(newArr);
     setCards(newArr);
-
-    const newshowCardId = '';
-    setShowCardId(newshowCardId);
+    setShowCardId('');
 
     const commentsId: string[] = [];
     for (const item of comments) {
@@ -106,9 +105,10 @@ function App() {
 
       const newCards = [...cards, card];
       appStorage.setCards(newCards);
-      const newCreateCardId = '';
       setCards(newCards);
-      setCreateCardId(newCreateCardId);
+      setCreateCardId('');
+    } else {
+      setCreateCardId('');
     }
   }
 
@@ -184,8 +184,8 @@ function App() {
       let success = false;
       const commentsId: string[] = [];
 
-      for (let i = 0; i < comments.length; i++) {
-        commentsId.push(comments[i].id);
+      for (let item of comments) {
+        commentsId.push(item.id);
       }
 
       while (!success) {
@@ -221,7 +221,7 @@ function App() {
 
   let UserPopup: JSX.Element;
   if (user == '') {
-    UserPopup = <LoginPopup setUserName={getUser} user={user} />;
+    UserPopup = <LoginPopup setUserName={getUser} />;
   } else {
     UserPopup = (
       <div className="login-popup__logged-wrapper">
@@ -242,14 +242,16 @@ function App() {
   let showCardPopup: JSX.Element = <></>;
   if (showCardId !== '') {
     const card = cards.find((elem) => elem.id === showCardId);
+
     if (card != undefined) {
       const column = columns.find((item) => card.status === item.id);
+
       if (column != undefined) {
         const cardComments: comments[] = [];
 
-        for (let i = 0; i < comments.length; i++) {
-          if (card.id === comments[i].card) {
-            cardComments.push(comments[i]);
+        for (let item of comments) {
+          if (card.id === item.card) {
+            cardComments.push(item);
           }
         }
 

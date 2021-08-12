@@ -146,7 +146,11 @@ function ShowCardPopup(props: {
   );
 
   return (
-    <div className="show-card">
+    <div
+      className="show-card"
+      onKeyDown={() => {
+        console.log(123);
+      }}>
       <div className="show-card__wrapper">
         <div className="show-card__top">
           {headerTop}
