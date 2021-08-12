@@ -18,6 +18,8 @@ function CreateCard(props: { createCard(header: string, text: string): void }) {
       props.createCard(header, text);
       setHeader('');
       setText('');
+    } else {
+      props.createCard(header, text);
     }
   }
 

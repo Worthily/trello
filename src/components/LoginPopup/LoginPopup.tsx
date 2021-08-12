@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { user } from '../../types';
 
-function LoginPopup(props: { setUserName(user: string): void; user: user }) {
+function LoginPopup(props: { setUserName(user: string): void }) {
   const [user, setUser] = useState('');
 
   function onValueChange(e: React.FormEvent<HTMLInputElement>): void {
