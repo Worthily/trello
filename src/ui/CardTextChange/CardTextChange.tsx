@@ -7,7 +7,7 @@ function CardTextChange(props: {
   setTextChange(status: boolean): void;
 }) {
   function onTextValueChange(e: React.FormEvent<HTMLTextAreaElement>): void {
-    if (e.currentTarget.value !== '') {
+    if (e.currentTarget.value.trim()) {
       props.setText(e.currentTarget.value);
     } else {
       props.setText('');
@@ -16,7 +16,7 @@ function CardTextChange(props: {
 
   function onTextSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (props.text !== '') {
+    if (props.text.trim()) {
       props.onTextChange(props.text);
       props.setText(props.text);
       props.setTextChange(false);

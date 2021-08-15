@@ -46,8 +46,7 @@ function ShowCardPopup(props: {
 
   function onCommentSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const test = commentText.replace(/\s/g, '');
-    if (test !== '') {
+    if (commentText.trim()) {
       props.onCommentAdd(id, commentText);
     }
     setCommentText('');

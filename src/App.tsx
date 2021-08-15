@@ -28,16 +28,13 @@ function App() {
   }
 
   function onCardDelete(id: string): void {
-    let newArr: cards[] = cards;
-
-    newArr = newArr.filter((elem) => {
+    let newArr: cards[] = cards.filter((elem) => {
       return elem.id != id;
     });
     appStorage.setCards(newArr);
     setCards(newArr);
 
-    const newshowCardId = '';
-    setShowCardId(newshowCardId);
+    setShowCardId('');
 
     const commentsId: string[] = [];
     for (const item of comments) {
@@ -46,7 +43,7 @@ function App() {
       }
     }
 
-    onCommentDell(commentsId);
+    onDeleteComments(commentsId);
   }
 
   function getUser(userName: user): void {
@@ -56,12 +53,11 @@ function App() {
     }
   }
 
-  function changeColumnTitle(id: string, header: string): void {
-    const test = header.replace(/\s/g, '');
-    if (test !== '') {
+  function changeColumnTitle(id: string, newTitle: string): void {
+    if (newTitle.trim()) {
       const newArr = columns.map((item) => {
         if (item.id === id) {
-          return { ...item, header };
+          return { ...item, header: newTitle };
         }
         return item;
       });
@@ -75,10 +71,7 @@ function App() {
   }
 
   function createCard(cardHeader: string, cardText: string) {
-    const testCardHeader = cardHeader.replace(/\s/g, '');
-    const testCardText = cardText.replace(/\s/g, '');
-
-    if (testCardHeader !== '' && testCardText !== '') {
+    if (cardHeader.trim() && cardText.trim()) {
       let id = 0;
       let success = false;
       const cardsId: string[] = [];
@@ -125,8 +118,7 @@ function App() {
   }
 
   function changeCardHeader(id: string, header: string) {
-    const test = header.replace(/\s/g, '');
-    if (test !== '') {
+    if (header.trim()) {
       const newArr = cards.map((item) => {
         if (item.id === id) {
           return { ...item, header };
@@ -139,8 +131,7 @@ function App() {
   }
 
   function changeCardText(id: string, text: string) {
-    const test = text.replace(/\s/g, '');
-    if (test !== '') {
+    if (text.trim()) {
       const newArr = cards.map((item) => {
         if (item.id === id) {
           return { ...item, text };
@@ -152,20 +143,16 @@ function App() {
     }
   }
 
-  function onCommentDell(id: string[]) {
-    let newArr: comments[] = comments;
-    for (const idItem of id) {
-      newArr = newArr.filter((elem) => {
-        return elem.id != idItem;
-      });
-    }
-    appStorage.setComments(newArr);
-    setComments(newArr);
-  }
+  const onDeleteComments = (ids: string[]) => {
+    const filteredComments = comments.filter((comment) => {
+      return !ids.includes(comment.id);
+    });
+    appStorage.setComments(filteredComments);
+    setComments(filteredComments);
+  };
 
   function onCommentChange(id: string, text: string) {
-    const test = text.replace(/\s/g, '');
-    if (test !== '') {
+    if (text.trim()) {
       const newArr = comments.map((item) => {
         if (item.id === id) {
           return { ...item, text };
@@ -178,8 +165,7 @@ function App() {
   }
 
   function onCommentAdd(id: string, text: string) {
-    const test = text.replace(/\s/g, '');
-    if (test !== '') {
+    if (text.trim()) {
       let commentId = 0;
       let success = false;
       const commentsId: string[] = [];
@@ -219,18 +205,13 @@ function App() {
     return count;
   }
 
-  let UserPopup: JSX.Element;
-  if (user == '') {
-    UserPopup = <LoginPopup setUserName={getUser} user={user} />;
-  } else {
-    UserPopup = (
-      <div className="login-popup__logged-wrapper">
-        <span className="login-popup__logged-str">
-          Приветствуем в Trello, {user}
-        </span>
-      </div>
-    );
-  }
+  const UserLable = (
+    <div className="login-popup__logged-wrapper">
+      <span className="login-popup__logged-str">
+        Приветствуем в Trello, {user}
+      </span>
+    </div>
+  );
 
   let createCardPopup: JSX.Element;
   if (createCardId != '') {
@@ -264,7 +245,7 @@ function App() {
             onHeaderChange={changeCardHeader}
             onTextChange={changeCardText}
             cardComments={cardComments}
-            onCommentDell={onCommentDell}
+            onCommentDell={onDeleteComments}
             onCommentChange={onCommentChange}
             onCommentAdd={onCommentAdd}
           />
@@ -296,7 +277,15 @@ function App() {
     <header className="app">
       {showCardPopup}
       {createCardPopup}
-      {UserPopup}
+      {user == '' ? (
+        <LoginPopup setUserName={getUser} user={user} />
+      ) : (
+        <div className="login-popup__logged-wrapper">
+          <span className="login-popup__logged-str">
+            Приветствуем в Trello, {user}
+          </span>
+        </div>
+      )}
       <ul className="app__column-wrapper">{columnItems}</ul>
     </header>
   );
