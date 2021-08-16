@@ -3,6 +3,7 @@ import commentImg from '../../assets/img/comment.png';
 import notCheckImg from '../../assets/img/viewblack.png';
 import checkImg from '../../assets/img/viewgreen.png';
 import dellImg from '../../assets/img/delete.svg';
+import CommentsCount from '../CommentsCount';
 import { cards } from '../../types';
 
 function Card(props: {
@@ -15,15 +16,6 @@ function Card(props: {
   const { card, OnDelete, onCheck, onShowPopup, commentsCount } = props;
 
   const btnImgSrc = card.checked ? checkImg : notCheckImg;
-
-  let commentsCountSpan: JSX.Element;
-  if (commentsCount() !== 0) {
-    commentsCountSpan = (
-      <span className="card__comment-count">{commentsCount()}</span>
-    );
-  } else {
-    commentsCountSpan = <></>;
-  }
 
   return (
     <div className="column__card card">
@@ -39,7 +31,7 @@ function Card(props: {
           <img src={btnImgSrc} alt="checked" className="card__checked-img" />
         </div>
         <div className="card__comments-btn card__btn">
-          {commentsCountSpan}
+          {<CommentsCount count={commentsCount} />}
           <img src={commentImg} alt="comment" className="card__comment-img" />
         </div>
         <div onClick={OnDelete} className="card__dell-btn card__btn">

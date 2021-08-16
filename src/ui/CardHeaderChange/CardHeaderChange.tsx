@@ -7,7 +7,7 @@ function CardHeaderChange(props: {
   setHeaderChange(status: boolean): void;
 }) {
   function onHeaderValueChange(e: React.FormEvent<HTMLInputElement>): void {
-    if (e.currentTarget.value !== '') {
+    if (e.currentTarget.value.trim()) {
       props.setHeader(e.currentTarget.value);
     } else {
       props.setHeader('');
@@ -16,7 +16,7 @@ function CardHeaderChange(props: {
 
   function onHeaderSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (props.header != '') {
+    if (props.header.trim()) {
       props.onHeaderChange(props.header);
       props.setHeader(props.header);
       props.setHeaderChange(false);
