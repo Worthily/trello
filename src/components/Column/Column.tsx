@@ -2,23 +2,29 @@ import React, { useState } from 'react';
 import Card from '../Card';
 import AddCardBtn from '../../ui/AddCardBtn';
 import changeImg from '../../assets/img/change.png';
-import ColumnHeaderChange from '../../ui/ColumnHeaderChange';
+import ColumnTitleChange from '../../ui/ColumnTitleChange';
 import { cards, columns } from '../../types';
 
 function Column(props: {
   column: columns;
   cards: cards[];
-  OnDelete(id: string): void;
-  onCheck(id: string): void;
-  getHeader(id: string, header: string): void;
+  onCardDelete(id: string): void;
+  onCardChecked(id: string): void;
+  changeColumnTitle(id: string, title: string): void;
   createCard(id: string): void;
   onShowPopup(id: string): void;
   commentsCount(id: string): number;
 }) {
-  const { id, header } = props.column;
-  const { cards, OnDelete, onCheck, createCard, onShowPopup, commentsCount } =
-    props;
-  const [columnHeader, setHeader] = useState(header);
+  const { id, title } = props.column;
+  const {
+    cards,
+    onCardDelete,
+    onCardChecked,
+    createCard,
+    onShowPopup,
+    commentsCount,
+  } = props;
+  const [columnTitle, setTitle] = useState(title);
   const [change, setChange] = useState(false);
 
   function onChangeBtnClick(): void {
@@ -27,7 +33,7 @@ function Column(props: {
 
   let heading = (
     <div className="column__header-wrapper">
-      <h2 className="column__header">{header}</h2>
+      <h2 className="column__header">{title}</h2>
       <div onClick={onChangeBtnClick} className="column__header-change-btn">
         <img src={changeImg} alt="change" />
       </div>
@@ -36,13 +42,13 @@ function Column(props: {
 
   if (change) {
     heading = (
-      <ColumnHeaderChange
-        header={columnHeader}
-        setHeader={(header: string) => {
-          setHeader(header);
+      <ColumnTitleChange
+        title={columnTitle}
+        setTitle={(title: string) => {
+          setTitle(title);
         }}
-        getHeader={(header: string) => {
-          props.getHeader(id, header);
+        getTitle={(title: string) => {
+          props.changeColumnTitle(id, title);
         }}
         setChange={(status: boolean) => {
           setChange(status);
@@ -52,13 +58,13 @@ function Column(props: {
   }
 
   const elements = cards.map((item) => {
-    if (item && item.status == id) {
+    if (item && item.columnId == id) {
       return (
         <li key={item.id} className="column__card-item">
           <Card
             card={item}
-            OnDelete={() => OnDelete(item.id)}
-            onCheck={() => onCheck(item.id)}
+            onCardDelete={() => onCardDelete(item.id)}
+            onCardChecked={() => onCardChecked(item.id)}
             onShowPopup={() => onShowPopup(item.id)}
             commentsCount={() => commentsCount(item.id)}
           />

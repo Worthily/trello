@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
-function CreateCard(props: { createCard(header: string, text: string): void }) {
-  const [header, setHeader] = useState('');
+function CreateCard(props: { createCard(title: string, text: string): void }) {
+  const [title, setTitle] = useState('');
   const [text, setText] = useState('');
 
-  function onHeaderChange(e: React.FormEvent<HTMLInputElement>): void {
-    setHeader(e.currentTarget.value);
+  function onTitleChange(e: React.FormEvent<HTMLInputElement>): void {
+    setTitle(e.currentTarget.value);
   }
 
   function onTextChange(e: React.FormEvent<HTMLTextAreaElement>): void {
@@ -14,12 +14,12 @@ function CreateCard(props: { createCard(header: string, text: string): void }) {
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (header !== '' && text !== '') {
-      props.createCard(header, text);
-      setHeader('');
+    if (title !== '' && text !== '') {
+      props.createCard(title, text);
+      setTitle('');
       setText('');
     } else {
-      props.createCard(header, text);
+      props.createCard(title, text);
     }
   }
 
@@ -30,9 +30,8 @@ function CreateCard(props: { createCard(header: string, text: string): void }) {
         <form onSubmit={onSubmit} className="createcard__form">
           <input
             placeholder="Заголовок"
-            onChange={onHeaderChange}
+            onChange={onTitleChange}
             type="text"
-            name="inputHeader"
             className="createcard__header-input"
           />
           <textarea

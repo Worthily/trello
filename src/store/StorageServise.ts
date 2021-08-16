@@ -28,11 +28,11 @@ class StorageServise {
       cards = [
         {
           id: 'w1',
-          header: 'Отчет',
+          title: 'Отчет',
           text: 'Лишь сделанные на базе интернет-аналитики выводы ассоциативно распределены по отраслям. Как принято считать, акционеры крупнейших компаний освещают чрезвычайно интересные особенности картины в целом, однако',
           checked: false,
           author: 'Дмитрий',
-          status: 'ToDo',
+          columnId: 'ToDo',
         },
       ];
       this.setCards(cards);
@@ -51,10 +51,10 @@ class StorageServise {
       columns = JSON.parse(columnsStr);
     } else {
       columns = [
-        { id: 'ToDo', header: 'To Do' },
-        { id: 'InProgress', header: 'In progress' },
-        { id: 'Testing', header: 'Testing' },
-        { id: 'Done', header: 'Done' },
+        { id: 'ToDo', title: 'To Do' },
+        { id: 'InProgress', title: 'In progress' },
+        { id: 'Testing', title: 'Testing' },
+        { id: 'Done', title: 'Done' },
       ];
       this.setColumns(columns);
     }

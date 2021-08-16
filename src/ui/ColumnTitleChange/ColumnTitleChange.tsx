@@ -1,19 +1,19 @@
 import React from 'react';
 
-function ColumnHeaderChange(props: {
-  header: string;
-  setHeader(header: string): void;
-  getHeader(header: string): void;
+function ColumnTitleChange(props: {
+  title: string;
+  setTitle(title: string): void;
+  getTitle(title: string): void;
   setChange(status: boolean): void;
 }) {
   function onValueChange(e: React.FormEvent<HTMLInputElement>): void {
-    props.setHeader(e.currentTarget.value);
+    props.setTitle(e.currentTarget.value);
   }
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (props.header !== '') {
-      props.getHeader(props.header);
+    if (props.title !== '') {
+      props.getTitle(props.title);
       props.setChange(false);
     }
   }
@@ -23,7 +23,7 @@ function ColumnHeaderChange(props: {
         <input
           onChange={onValueChange}
           className="column__input"
-          value={props.header}
+          value={props.title}
         />
         <button className="column__submit-btn">OK</button>
       </form>
@@ -31,4 +31,4 @@ function ColumnHeaderChange(props: {
   );
 }
 
-export default ColumnHeaderChange;
+export default ColumnTitleChange;
