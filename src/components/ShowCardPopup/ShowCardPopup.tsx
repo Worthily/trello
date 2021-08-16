@@ -4,7 +4,7 @@ import closeImg from '../../assets/img/close.png';
 import sendBtn from '../../assets/img/send-button.png';
 import changeBtn from '../../assets/img/change-white.png';
 import Comment from '../Comment';
-import CardHeaderChange from '../../ui/CardHeaderChange';
+import CardTitleChange from '../../ui/CardTitleChange';
 import CardTextChange from '../../ui/CardTextChange';
 import { comments, cards } from '../../types';
 
@@ -16,17 +16,17 @@ function ShowCardPopup(props: {
   OnDelete(id: string): void;
   OnClose(): void;
   addListener(): void;
-  onHeaderChange(id: string, header: string): void;
+  onTitleChange(id: string, title: string): void;
   onTextChange(id: string, text: string): void;
-  onCommentDell(id: string[]): void;
-  onCommentChange(id: string, text: string): void;
+  onDeleteComments(id: string[]): void;
+  onChangeComments(id: string, text: string): void;
   onCommentAdd(id: string, text: string): void;
 }) {
-  const { id, header, text, author } = props.card;
-  const [headerChange, setHeaderChange] = useState(false);
+  const { id, title, text, author } = props.card;
+  const [titleChange, setTitleChange] = useState(false);
   const [textChange, setTextChange] = useState(false);
   const [commentText, setCommentText] = useState('');
-  const [cardHeader, setHeader] = useState(header);
+  const [cardTitle, setTitle] = useState(title);
   const [cardText, setText] = useState(text);
 
   function addListen() {
@@ -57,13 +57,13 @@ function ShowCardPopup(props: {
   }
 
   let headerTop: JSX.Element;
-  if (!headerChange) {
+  if (!titleChange) {
     headerTop = (
       <div className="show-card__header-wrapper">
-        <h2 className="show-card__header">{header}</h2>
+        <h2 className="show-card__header">{title}</h2>
         <div
           onClick={() => {
-            setHeaderChange(true);
+            setTitleChange(true);
           }}
           className="show-card__header-chenge-btn">
           <img
@@ -78,16 +78,16 @@ function ShowCardPopup(props: {
     );
   } else {
     headerTop = (
-      <CardHeaderChange
-        header={cardHeader}
-        setHeader={(header: string) => {
-          setHeader(header);
+      <CardTitleChange
+        title={cardTitle}
+        setTitle={(title: string) => {
+          setTitle(title);
         }}
-        onHeaderChange={(header: string) => {
-          props.onHeaderChange(id, header);
+        onTitleChange={(title: string) => {
+          props.onTitleChange(id, title);
         }}
-        setHeaderChange={(status: boolean) => {
-          setHeaderChange(status);
+        setTitleChange={(status: boolean) => {
+          setTitleChange(status);
         }}
       />
     );
@@ -135,8 +135,8 @@ function ShowCardPopup(props: {
           <li key={item.id} className="show-card__comment-item">
             <Comment
               comment={item}
-              onDelete={props.onCommentDell}
-              onChange={props.onCommentChange}
+              onDelete={props.onDeleteComments}
+              onChange={props.onChangeComments}
             />
           </li>
         );
@@ -145,11 +145,7 @@ function ShowCardPopup(props: {
   );
 
   return (
-    <div
-      className="show-card"
-      onKeyDown={() => {
-        console.log(123);
-      }}>
+    <div className="show-card">
       <div className="show-card__wrapper">
         <div className="show-card__top">
           {headerTop}

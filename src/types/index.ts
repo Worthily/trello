@@ -1,15 +1,15 @@
 export type cards = {
   id: string;
-  header: string;
+  title: string;
   text: string;
   checked: boolean;
   author: string;
-  status: string;
+  columnId: string;
 };
 
 export type columns = {
   id: string;
-  header: string;
+  title: string;
 };
 
 export type comments = {

@@ -2,8 +2,8 @@ import React from 'react';
 
 function CardTextChange(props: {
   text: string;
-  setText(header: string): void;
-  onTextChange(header: string): void;
+  setText(text: string): void;
+  onTextChange(text: string): void;
   setTextChange(status: boolean): void;
 }) {
   function onTextValueChange(e: React.FormEvent<HTMLTextAreaElement>): void {

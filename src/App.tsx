@@ -57,7 +57,7 @@ function App() {
     if (newTitle.trim()) {
       const newArr = columns.map((item) => {
         if (item.id === id) {
-          return { ...item, header: newTitle };
+          return { ...item, title: newTitle };
         }
         return item;
       });
@@ -70,8 +70,8 @@ function App() {
     setCreateCardId(id);
   }
 
-  function createCard(cardHeader: string, cardText: string) {
-    if (cardHeader.trim() && cardText.trim()) {
+  function createCard(cardTitle: string, cardText: string) {
+    if (cardTitle.trim() && cardText.trim()) {
       let id = 0;
       let success = false;
       const cardsId: string[] = [];
@@ -90,11 +90,11 @@ function App() {
 
       const card = {
         id: `w${id}`,
-        header: cardHeader,
+        title: cardTitle,
         text: cardText,
         checked: false,
         author: user,
-        status: createCardId,
+        columnId: createCardId,
       };
 
       const newCards = [...cards, card];
@@ -118,11 +118,11 @@ function App() {
     setListenerESC(true);
   }
 
-  function changeCardHeader(id: string, header: string) {
-    if (header.trim()) {
+  function changeCardTitle(id: string, title: string) {
+    if (title.trim()) {
       const newArr = cards.map((item) => {
         if (item.id === id) {
-          return { ...item, header };
+          return { ...item, title };
         }
         return item;
       });
@@ -152,7 +152,7 @@ function App() {
     setComments(filteredComments);
   };
 
-  function onCommentChange(id: string, text: string) {
+  function onChangeComments(id: string, text: string) {
     if (text.trim()) {
       const newArr = comments.map((item) => {
         if (item.id === id) {
@@ -206,27 +206,12 @@ function App() {
     return count;
   }
 
-  const UserLable = (
-    <div className="login-popup__logged-wrapper">
-      <span className="login-popup__logged-str">
-        Приветствуем в Trello, {user}
-      </span>
-    </div>
-  );
-
-  let createCardPopup: JSX.Element;
-  if (createCardId != '') {
-    createCardPopup = <CreateCard createCard={createCard} />;
-  } else {
-    createCardPopup = <></>;
-  }
-
   let showCardPopup: JSX.Element = <></>;
   if (showCardId !== '') {
     const card = cards.find((elem) => elem.id === showCardId);
 
     if (card != undefined) {
-      const column = columns.find((item) => card.status === item.id);
+      const column = columns.find((item) => card.columnId === item.id);
 
       if (column != undefined) {
         const cardComments: comments[] = [];
@@ -240,16 +225,16 @@ function App() {
         showCardPopup = (
           <ShowCardPopup
             card={card}
-            column={column.header}
+            column={column.title}
             OnDelete={onCardDelete}
             OnClose={onCloseCardPopup}
             listener={listenerESC}
             addListener={addListener}
-            onHeaderChange={changeCardHeader}
+            onTitleChange={changeCardTitle}
             onTextChange={changeCardText}
             cardComments={cardComments}
-            onCommentDell={onDeleteComments}
-            onCommentChange={onCommentChange}
+            onDeleteComments={onDeleteComments}
+            onChangeComments={onChangeComments}
             onCommentAdd={onCommentAdd}
           />
         );
@@ -265,9 +250,9 @@ function App() {
         <Column
           column={item}
           cards={cards}
-          OnDelete={onCardDelete}
-          onCheck={onCradChecked}
-          getHeader={changeColumnTitle}
+          onCardDelete={onCardDelete}
+          onCardChecked={onCradChecked}
+          changeColumnTitle={changeColumnTitle}
           createCard={showCreateCardPopup}
           onShowPopup={onShowCardPopup}
           commentsCount={commentsCount}
@@ -279,7 +264,7 @@ function App() {
   return (
     <header className="app">
       {showCardPopup}
-      {createCardPopup}
+      {createCardId != '' ? <CreateCard createCard={createCard} /> : <></>}
       {user == '' ? (
         <LoginPopup setUserName={getUser} />
       ) : (
